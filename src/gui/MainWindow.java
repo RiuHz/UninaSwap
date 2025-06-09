@@ -16,8 +16,10 @@ public class MainWindow extends JFrame {
     private Controller c1;
     JComboBox<String> universitaCombo;
     Color bluPrussia = new Color(0x0F3A5F);
-    //ImageIcon logoIcon = new ImageIcon("C:/Users/Faust/OneDrive/Desktop/GitHub/UninaSwap/src/img/logo.png");
-    //JLabel logoLabel = new JLabel(logoIcon);
+    ImageIcon logoIcon = new ImageIcon(getClass().getResource("/img/logo.png"));
+    Image originalImage = logoIcon.getImage();
+    Image resizedImage = originalImage.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+    ImageIcon resizedIcon = new ImageIcon(resizedImage);
     JPanel centerContainer = new JPanel(new GridBagLayout());
 
 
@@ -28,6 +30,7 @@ public class MainWindow extends JFrame {
         this.c1 = controller;
 
         setTitle("Test");
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(637, 546);
         setLocationRelativeTo(null);
@@ -37,13 +40,13 @@ public class MainWindow extends JFrame {
         centerContainer.setBackground(bluPrussia);
         getContentPane().add(centerContainer, BorderLayout.CENTER);
 
-        // Crea i pannelli PRIMA di aggiungerli
+
         createLoginPanel();
         createRegistrationPanel();
 
-        // Aggiungi solo il pannello login inizialmente
+
         centerContainer.add(loginPanel);
-        registrationPanel.setVisible(false); // verrà gestito poi in modo dinamico
+        registrationPanel.setVisible(false);
     }
 
     private void createLoginPanel() {
@@ -51,11 +54,14 @@ public class MainWindow extends JFrame {
         loginPanel.setBackground(bluPrussia);
 
 
+
         loginPanel.setLayout(new GridBagLayout());
         centerContainer.add(loginPanel);
 
         JPanel contenutoLogin = new JPanel();
         contenutoLogin.setBackground(bluPrussia);
+        JLabel logoLabel = new JLabel(resizedIcon);
+        logoLabel.setIcon(resizedIcon);
 
         JLabel titleLabel = new JLabel("LOGIN");
         titleLabel.setFont(new Font("Tahoma", Font.PLAIN, 21));
@@ -96,7 +102,7 @@ public class MainWindow extends JFrame {
 
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-               // .addComponent(logoLabel)
+            .addComponent(logoLabel)
                 .addComponent(titleLabel)
                 .addComponent(emailLabel)
                 .addComponent(emailLoginField, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
@@ -109,6 +115,7 @@ public class MainWindow extends JFrame {
 
         layout.setVerticalGroup(
             layout.createSequentialGroup()
+            .addComponent(logoLabel)
                 .addComponent(titleLabel)
                 .addComponent(emailLabel)
                 .addComponent(emailLoginField, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
