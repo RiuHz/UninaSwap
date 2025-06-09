@@ -37,13 +37,13 @@ public class MainWindow extends JFrame {
         centerContainer.setBackground(bluPrussia);
         getContentPane().add(centerContainer, BorderLayout.CENTER);
 
-        // Crea i pannelli PRIMA di aggiungerli
+       
         createLoginPanel();
         createRegistrationPanel();
 
-        // Aggiungi solo il pannello login inizialmente
+  
         centerContainer.add(loginPanel);
-        registrationPanel.setVisible(false); // verrà gestito poi in modo dinamico
+        registrationPanel.setVisible(false); 
     }
 
     private void createLoginPanel() {
