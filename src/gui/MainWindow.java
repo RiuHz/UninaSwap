@@ -18,6 +18,7 @@ public class MainWindow extends JFrame {
     Color bluPrussia = new Color(0x0F3A5F);
     //ImageIcon logoIcon = new ImageIcon("C:/Users/Faust/OneDrive/Desktop/GitHub/UninaSwap/src/img/logo.png");
     //JLabel logoLabel = new JLabel(logoIcon);
+    JPanel centerContainer = new JPanel(new GridBagLayout());
 
 
     private JPanel loginPanel;
@@ -25,29 +26,33 @@ public class MainWindow extends JFrame {
 
     public MainWindow(Controller controller) {
         this.c1 = controller;
+
         setTitle("Test");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(637, 546);
         setLocationRelativeTo(null);
 
-        // Pannelli
+        getContentPane().setLayout(new BorderLayout());
+
+        centerContainer.setBackground(bluPrussia);
+        getContentPane().add(centerContainer, BorderLayout.CENTER);
+
+        // Crea i pannelli PRIMA di aggiungerli
         createLoginPanel();
         createRegistrationPanel();
 
-        getContentPane().setLayout(null);
-
-        loginPanel.setBounds(0, 0, 637, 546);
-        registrationPanel.setBounds(0, 0, 637, 546);
-
-        getContentPane().add(loginPanel);
-        getContentPane().add(registrationPanel);
-        registrationPanel.setVisible(false);
+        // Aggiungi solo il pannello login inizialmente
+        centerContainer.add(loginPanel);
+        registrationPanel.setVisible(false); // verrà gestito poi in modo dinamico
     }
+
     private void createLoginPanel() {
         loginPanel = new JPanel();
         loginPanel.setBackground(bluPrussia);
 
+
         loginPanel.setLayout(new GridBagLayout());
+        centerContainer.add(loginPanel);
 
         JPanel contenutoLogin = new JPanel();
         contenutoLogin.setBackground(bluPrussia);
@@ -120,6 +125,7 @@ public class MainWindow extends JFrame {
         registrationPanel = new JPanel();
         registrationPanel.setBackground(bluPrussia);
         registrationPanel.setLayout(new GridBagLayout());
+        centerContainer.add(registrationPanel);
 
         JPanel contenutoRegistrazione = new JPanel();
         contenutoRegistrazione.setBackground(bluPrussia);
