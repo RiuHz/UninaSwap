@@ -3,19 +3,22 @@ package controller;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import dao.UniversityDAO;
+
 import java.util.ArrayList;
 
-import entities.university.UniversityDAO;
 import entities.user.UserDAO;
 import gui.MainWindow;
 
 public class Controller {
 	private MainWindow loginFrame;
+	private UniversityDAO uniDao;
 	// private appFrame = null;
 	private UserDAO user = new UserDAO();
 
     public Controller() {
         loginFrame = new MainWindow(this);
+        uniDao=new UniversityDAO();
     }
 
     public static void main(String[] args) {
@@ -44,7 +47,7 @@ public class Controller {
 	}
 
 	public ArrayList<String> getUniversityList() {
-		return UniversityDAO.getNamesList();
+		return uniDao.getNamesList();
 	}
 
 }
