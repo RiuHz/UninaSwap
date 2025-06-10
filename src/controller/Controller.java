@@ -17,8 +17,9 @@ public class Controller {
 	private UserDAO user = new UserDAO();
 
     public Controller() {
-        loginFrame = new MainWindow(this);
         uniDao=new UniversityDAO();
+        loginFrame = new MainWindow(this);
+
     }
 
     public static void main(String[] args) {
