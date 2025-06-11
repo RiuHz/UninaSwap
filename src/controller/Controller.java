@@ -3,7 +3,7 @@ package controller;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import dao.UniversityDAOPostgre;
+import dao.university.UniversityDAOPostgre;
 
 import java.util.ArrayList;
 

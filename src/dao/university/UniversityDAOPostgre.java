@@ -1,7 +1,6 @@
-package dao;
+package dao.university;
 
 import java.util.ArrayList;
-import db.DatabaseManager;
 
 public class UniversityDAOPostgre implements UniversityDAOInterface {
 
