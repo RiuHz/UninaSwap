@@ -3,7 +3,7 @@ package controller;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import dao.UniversityDAO;
+import dao.UniversityDAOPostgre;
 
 import java.util.ArrayList;
 
@@ -12,12 +12,12 @@ import gui.MainWindow;
 
 public class Controller {
 	private MainWindow loginFrame;
-	private UniversityDAO uniDao;
+	private UniversityDAOPostgre uniDao;
 	// private appFrame = null;
 	private UserDAO user = new UserDAO();
 
     public Controller() {
-        uniDao=new UniversityDAO();
+        uniDao=new UniversityDAOPostgre();
         loginFrame = new MainWindow(this);
 
     }

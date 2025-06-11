@@ -3,7 +3,7 @@ package dao;
 import java.util.ArrayList;
 import db.DatabaseManager;
 
-public class UniversityDAO implements UniversityDAOInterface {
+public class UniversityDAOPostgre implements UniversityDAOInterface {
 
 	public ArrayList<String> getNamesList() {
 
