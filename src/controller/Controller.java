@@ -1,54 +1,44 @@
 package controller;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
-import dao.university.UniversityDAOPostgre;
 
 import java.util.ArrayList;
 
-import entities.user.UserDAO;
-import gui.MainWindow;
+import dao.user.*;
+import dao.university.*;
+
+import gui.main.MainWindow;
 
 public class Controller {
+	
 	private MainWindow loginFrame;
-	private UniversityDAOPostgre uniDao;
+	private UniversityDAOInterface universityDAO = new UniversityDAOPostgre();
 	// private appFrame = null;
-	private UserDAO user = new UserDAO();
+	private UserDAOInterface userDAO = new UserDAOPostgre();
 
     public Controller() {
-        uniDao=new UniversityDAOPostgre();
         loginFrame = new MainWindow(this);
-
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Controller controller = new Controller();
-            controller.loginFrame.setVisible(true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            	new Controller();
+            }
         });
     }
 
     public void validateLogin(String username, String password) {
-        if (user.validLogin(username, password)) {
-            // appFrame.show();
-        } else if (user.invalidUsername()) {
-            loginFrame.showInvalidUsernameError();
-        } else {
-            loginFrame.showInvalidPasswordError();
-        }
+    	loginFrame.showInvalidPasswordError();
     }
 
 
 	public void validateRegistration(String username, String password, String name, String surname, String university) {
-		if (user.validRegistration(username, password, name, surname, university))
-			loginFrame.showSuccessRegistration();
-		else
-			loginFrame.showExistingUsernameError();
+		loginFrame.showInvalidUsernameError();
 	}
 
 	public ArrayList<String> getUniversityList() {
-		return uniDao.getNamesList();
+		return universityDAO.getNamesList();
 	}
 
 }
