@@ -1,14 +1,14 @@
 package dao.university;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 public class UniversityDAOPostgre implements UniversityDAOInterface {
 
-	public ArrayList<String> getNamesList() {
+	public Vector<String> getNamesList() {
 
 		// TODO Fai la query per ottenere tutti i nomi di universitàle Università
 
-		ArrayList<String> p = new ArrayList<String>();
+		Vector<String> p = new Vector<String>();
 
 		p.add("Università di Napoli Federico II");
 

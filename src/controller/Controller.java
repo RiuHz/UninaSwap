@@ -2,7 +2,7 @@ package controller;
 
 import javax.swing.SwingUtilities;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 import dao.user.*;
 import dao.university.*;
@@ -37,7 +37,7 @@ public class Controller {
 		loginFrame.showInvalidUsernameError();
 	}
 
-	public ArrayList<String> getUniversityList() {
+	public Vector<String> getUniversityList() {
 		return universityDAO.getNamesList();
 	}
 
