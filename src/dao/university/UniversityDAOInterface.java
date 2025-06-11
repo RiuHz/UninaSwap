@@ -1,9 +1,9 @@
 package dao.university;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 public interface UniversityDAOInterface {
 	
-	public  ArrayList<String> getNamesList();
+	public  Vector<String> getNamesList();
 
 }
