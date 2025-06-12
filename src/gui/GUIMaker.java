@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.*;
+import java.net.*;
 import javax.swing.*;
 import java.util.*;
 
@@ -20,7 +21,8 @@ public abstract class GUIMaker {
 	}
 	
 	protected JLabel getResizedLogo(double sizeMultiplier) {
-		ImageIcon logo = new ImageIcon(System.getProperty("user.dir") + "/src/img/logo.png");
+		URL logoURL = getClass().getResource("/img/logo.png");
+		ImageIcon logo = new ImageIcon(logoURL);
 		
 		int width = (int) (logo.getIconWidth() * sizeMultiplier);
 		int height = (int) (logo.getIconHeight() * sizeMultiplier);
@@ -28,6 +30,15 @@ public abstract class GUIMaker {
 		Image resizedLogo = logo.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH); 
 		
 		return new JLabel(new ImageIcon(resizedLogo));
+	}
+	
+	protected Image getIconImage() {
+		URL iconURL = getClass().getResource("/img/icon.png");
+		ImageIcon icon = new ImageIcon(iconURL);
+		
+		Taskbar.getTaskbar().setIconImage(icon.getImage());
+		
+		return icon.getImage();
 	}
 	
     protected JLabel createWhiteLabel(String text, int fontSize) {

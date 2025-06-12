@@ -5,14 +5,13 @@ import javax.swing.*;
 
 import controller.Controller;
 import gui.GUIComponent;
+import gui.GUIMaker;
 
-public class MainWindow implements GUIComponent {
+public class MainWindow extends GUIMaker implements GUIComponent {
 
 	private Controller controller;
 	
 	private JFrame frame = new JFrame();
-	
-	// TODO Icona della finestra?
 
     public MainWindow(Controller controller) {
     	
@@ -42,6 +41,7 @@ public class MainWindow implements GUIComponent {
     
     private void setWindowSettings() {
     	frame.setTitle("Unina Swap");
+    	frame.setIconImage(getIconImage());
     	frame.setSize(800, 600);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
