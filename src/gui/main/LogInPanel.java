@@ -1,60 +1,66 @@
 package gui.main;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import java.awt.event.*;
+import javax.swing.*;
 
 import controller.Controller;
 
+import gui.GUIComponent;
 import gui.GUIMaker;
 
-class LogInPanel extends GUIMaker {
+class LogInPanel extends GUIMaker implements GUIComponent {
 	
 	private Controller controller;
 	
 	private JPanel panel = createBluePanel();
 	private JLabel infoLabel = createWhiteLabel(" ", 14);
 	
-    // TODO ImageIcon logoIcon = new ImageIcon("C:/Users/Faust/OneDrive/Desktop/GitHub/UninaSwap/src/img/logo.png");
-	// TODO Percorso locale al progetto?
-	
 	LogInPanel(Controller controller) {
 		this.controller = controller;
 		
 		createComponents();
         
-        panel.setVisible(true);
+        show();
+	}
+	
+	JPanel getPanel() {
+		return panel;
+	}
+	
+	public void show() {
+		panel.setVisible(true);
+	}
+	
+	public void hide() {
+		panel.setVisible(false);
 	}
 	
 	private void createComponents() {
+		JLabel logoLabel = getResizedLogo(0.2);
+		
         JTextField usernameField = createWhiteRoundedTextField(20);
         JPasswordField passwordField = createWhiteRoundedPasswordField(20);
         
-        JButton loginButton = createGreenOutlinedButton("Accedi");
+        JButton logInButton = createGreenOutlinedButton("Accedi");
         JButton signUpButton = createWhiteUnderlineButton("Registrati");
 
-        loginButton.addMouseListener(new MouseAdapter() {
+        logInButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
             	String username = usernameField.getText();
                 char[] password = passwordField.getPassword();
                 // TODO Richiama un metodo per la validazione dell'accesso
+                System.out.println("(Pannello di Accesso) Premuto il bottone di accesso!");
             }
         });
 
         signUpButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
             	// TODO richiama un metodo per il cambio di pannello
+            	System.out.println("(Pannello di Accesso) Premuto il bottone di registrazione!");
             }
         });
 		
-		// TODO createLayout(panel, logoIcon, ..);
+		createLayout(panel, logoLabel, usernameField, passwordField, infoLabel, logInButton, signUpButton);
 	}
 	
     private void createLayout(JPanel panel, JComponent ... components) {
