@@ -1,8 +1,8 @@
 package controller;
 
-import javax.swing.SwingUtilities;
-
 import java.util.Vector;
+
+import javax.swing.SwingUtilities;
 
 import dao.user.*;
 import dao.university.*;
@@ -29,12 +29,12 @@ public class Controller {
     }
 
     public void validateLogin(String username, String password) {
-    	loginFrame.showInvalidPasswordError();
+    	
     }
 
 
 	public void validateRegistration(String username, String password, String name, String surname, String university) {
-		loginFrame.showInvalidUsernameError();
+		
 	}
 
 	public Vector<String> getUniversityList() {
