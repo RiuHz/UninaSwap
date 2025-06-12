@@ -36,7 +36,7 @@ class LogInPanel extends GUIMaker implements GUIComponent {
 	}
 	
 	private void createComponents() {
-		JLabel logoLabel = getResizedLogo(0.2);
+		JLabel logoLabel = getResizedLogo(0.25);
 		
         JTextField usernameField = createWhiteRoundedTextField(20);
         JPasswordField passwordField = createWhiteRoundedPasswordField(20);

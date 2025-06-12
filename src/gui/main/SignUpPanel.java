@@ -35,7 +35,7 @@ class SignUpPanel extends GUIMaker implements GUIComponent {
 	}
 	   
     private void createComponents() {
-    	JLabel logoLabel = getResizedLogo(0.2);
+    	JLabel logoLabel = getResizedLogo(0.25);
         
         JTextField nameField = createWhiteRoundedTextField(20);
         JTextField surnameField = createWhiteRoundedTextField(20);
@@ -52,7 +52,7 @@ class SignUpPanel extends GUIMaker implements GUIComponent {
             	String name = nameField.getText();
             	String surname = surnameField.getText();
             	String username = usernameField.getText();
-                char[] password = passwordField.getPassword(); // TODO Deprecato?
+                char[] password = passwordField.getPassword();
                 String university = (String) universityCombo.getSelectedItem();
                 // TODO Richiama un metodo per la validazione della registrazione
                 System.out.println("(Pannello di Registrazione) Premuto il bottone di registrazione!");
