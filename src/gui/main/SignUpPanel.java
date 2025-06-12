@@ -1,73 +1,72 @@
 package gui.main;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import java.awt.event.*;
+import javax.swing.*;
 
 import controller.Controller;
-
 import gui.GUIMaker;
+import gui.GUIComponent;
 
-class SignUpPanel extends GUIMaker {
+class SignUpPanel extends GUIMaker implements GUIComponent {
 	
 	private Controller controller;
 	
 	private JPanel panel = createBluePanel();
 	private JLabel infoLabel = createWhiteLabel(" ", 14);
-    // TODO private ImageIcon logoIcon = new ImageIcon("C:/Users/Faust/OneDrive/Desktop/GitHub/UninaSwap/src/img/logo.png");
-	// TODO Percorso locale al progetto?
 	
 	SignUpPanel(Controller controller) {
 		this.controller = controller;
 		
 		createComponents();
 		        
-        panel.setVisible(false);
+        show();
+	}
+	
+	JPanel getPanel() {
+		return panel;
+	}
+	
+	public void show() {
+		panel.setVisible(true);
+	}
+	
+	public void hide() {
+		panel.setVisible(false);
 	}
 	   
     private void createComponents() {
-        JLabel nameLabel = createWhiteLabel("Nome", 14);
-        JLabel surnameLabel = createWhiteLabel("Cognome", 14);
-        JLabel usernameLabel = createWhiteLabel("Username", 14);
-        JLabel passwordLabel = createWhiteLabel("Password", 14);
-        JLabel universityLabel = createWhiteLabel("Università", 14);
+    	JLabel logoLabel = getResizedLogo(0.2);
         
         JTextField nameField = createWhiteRoundedTextField(20);
         JTextField surnameField = createWhiteRoundedTextField(20);
         JTextField usernameField = createWhiteRoundedTextField(20);
 
         JPasswordField passwordField = createWhiteRoundedPasswordField(20);
-        JComboBox<String> universityCombo = new JComboBox<>(controller.getUniversityList());
+        JComboBox<String> universityCombo = createWhiteRoundedComboBox(controller.getUniversityList());
 
         JButton signUpButton = createGreenOutlinedButton("Registrati");
-        JButton loginButton = createWhiteUnderlineButton("Accedi");
+        JButton logInButton = createWhiteUnderlineButton("Accedi");
 
         signUpButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
             	String name = nameField.getText();
             	String surname = surnameField.getText();
             	String username = usernameField.getText();
-                String password = passwordField.getText(); // TODO Deprecato?
+                char[] password = passwordField.getPassword(); // TODO Deprecato?
                 String university = (String) universityCombo.getSelectedItem();
                 // TODO Richiama un metodo per la validazione della registrazione
+                System.out.println("(Pannello di Registrazione) Premuto il bottone di registrazione!");
             }
         });
 
-        loginButton.addMouseListener(new MouseAdapter() {
+        logInButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
             	// TODO richiama un metodo per il cambio di pannello
+            	System.out.println("(Pannello di Registrazione) Premuto il bottone di accesso!");
             }
         });
         
-        // TODO createLayout(panel, logoIcon, ..);
+        createLayout(panel, logoLabel, nameField, surnameField, usernameField, passwordField, universityCombo, infoLabel, signUpButton, logInButton);
     }
     
     private void createLayout(JPanel panel, JComponent ... components) {

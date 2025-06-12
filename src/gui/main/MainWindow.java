@@ -1,14 +1,15 @@
 package gui.main;
 
-import java.awt.CardLayout;
-
-import javax.swing.JFrame;
+import java.awt.*;
+import javax.swing.*;
 
 import controller.Controller;
+import gui.GUIComponent;
 
-public class MainWindow {
+public class MainWindow implements GUIComponent {
 
 	private Controller controller;
+	
 	private JFrame frame = new JFrame();
 	
 	// TODO Icona della finestra?
@@ -19,21 +20,32 @@ public class MainWindow {
         
         setWindowSettings();
         
-        LogInPanel login = new LogInPanel(controller);
-        SignUpPanel signup = new SignUpPanel(controller);
+        LogInPanel logIn = new LogInPanel(controller);
+        SignUpPanel signUp = new SignUpPanel(controller);
         
-        // TODO aggiungi i pannelli al JFrame
+        frame.add(logIn.getPanel());
+        frame.add(signUp.getPanel());
+        
+        show();
         
         // TODO Studiare il card layout
         
     }
     
-    private void setWindowSettings() {
-        frame.setTitle("Unina Swap");
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+    public void show() {
+    	frame.setVisible(true);
     }
     
+    public void hide() {
+    	frame.setVisible(false);
+    }
+    
+    private void setWindowSettings() {
+    	frame.setTitle("Unina Swap");
+    	frame.setSize(800, 600);
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(new CardLayout());
+    }
+
 }

@@ -1,13 +1,8 @@
 package gui;
 
-import java.awt.Color;
-import java.awt.Font;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import java.awt.*;
+import javax.swing.*;
+import java.util.*;
 
 public abstract class GUIMaker {
 	
@@ -22,6 +17,17 @@ public abstract class GUIMaker {
 		panel.setBackground(BLUE);
 		
 		return panel;
+	}
+	
+	protected JLabel getResizedLogo(double sizeMultiplier) {
+		ImageIcon logo = new ImageIcon(System.getProperty("user.dir") + "/src/img/logo.png");
+		
+		int width = (int) (logo.getIconWidth() * sizeMultiplier);
+		int height = (int) (logo.getIconHeight() * sizeMultiplier);
+		
+		Image resizedLogo = logo.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH); 
+		
+		return new JLabel(new ImageIcon(resizedLogo));
 	}
 	
     protected JLabel createWhiteLabel(String text, int fontSize) {
@@ -46,6 +52,12 @@ public abstract class GUIMaker {
     	// TODO Create passwordfield
     	
     	return field;
+    }
+    
+    protected <Type> JComboBox<Type> createWhiteRoundedComboBox(Vector<Type> elements) {
+    	JComboBox<Type> box = new JComboBox<Type>(elements);
+    	
+    	return box;
     }
      
     protected JButton createGreenOutlinedButton(String text) {

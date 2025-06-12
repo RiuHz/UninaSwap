@@ -1,17 +1,17 @@
 package controller;
 
-import java.util.Vector;
-
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.util.*;
 
 import dao.user.*;
 import dao.university.*;
 
+import gui.GUIComponent;
 import gui.main.MainWindow;
 
 public class Controller {
 	
-	private MainWindow loginFrame;
+	private GUIComponent loginFrame;
 	private UniversityDAOInterface universityDAO = new UniversityDAOPostgre();
 	// private appFrame = null;
 	private UserDAOInterface userDAO = new UserDAOPostgre();
