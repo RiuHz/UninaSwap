@@ -4,35 +4,45 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import controller.Controller;
-
-import gui.GUIComponent;
+import exception.user.*;
 import gui.GUIMaker;
 
-class LogInPanel extends GUIMaker implements GUIComponent {
+class LogInPanel extends GUIMaker {
 	
 	private Controller controller;
 	
 	private JPanel panel = createBluePanel();
-	private JLabel infoLabel = createWhiteLabel(" ", 14);
+	private JLabel infoLabel = createWhiteLabel(" ");
 	
 	LogInPanel(Controller controller) {
 		this.controller = controller;
 		
 		createComponents();
-        
-        show();
 	}
 	
 	JPanel getPanel() {
 		return panel;
 	}
 	
-	public void show() {
-		panel.setVisible(true);
+	private void cleanInfoLabel() {
+		infoLabel.setText(" ");
 	}
 	
-	public void hide() {
-		panel.setVisible(false);
+	private void showErrorMessage(String message) {
+		setRedColor(infoLabel);
+		infoLabel.setText(message);
+	}
+	
+	private void logInValidation(String username, char[] password) {
+		try {
+        	controller.userValidation(username, password);
+        } catch (InvalidUsernameException error) {
+        	showErrorMessage(error.getMessage());
+        } catch (InvalidPasswordException error) {
+        	showErrorMessage(error.getMessage());
+        } catch (Exception error) {
+        	showErrorMessage("Si è verificato un problema anomalo!");
+        }
 	}
 	
 	private void createComponents() {
@@ -48,37 +58,20 @@ class LogInPanel extends GUIMaker implements GUIComponent {
             public void mouseClicked(MouseEvent e) {
             	String username = usernameField.getText();
                 char[] password = passwordField.getPassword();
-                // TODO Richiama un metodo per la validazione dell'accesso
-                System.out.println("(Pannello di Accesso) Premuto il bottone di accesso!");
+                
+                logInValidation(username, password);
             }
         });
 
         signUpButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-            	// TODO richiama un metodo per il cambio di pannello
-            	System.out.println("(Pannello di Accesso) Premuto il bottone di registrazione!");
+            	controller.mainWindowSwitchTo("SignUp");
+            	cleanInfoLabel();
             }
         });
 		
-		createLayout(panel, logoLabel, usernameField, passwordField, infoLabel, logInButton, signUpButton);
+		createCenteredTopDownGroupLayout(panel, logoLabel, usernameField, passwordField, infoLabel, logInButton, signUpButton);
+		
+		setEqualSizeGroupLayout(panel, usernameField, passwordField);
 	}
-	
-    private void createLayout(JPanel panel, JComponent ... components) {
-        GroupLayout layout = new GroupLayout(panel);
-        panel.setLayout(layout);
-        
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-
-        GroupLayout.SequentialGroup verticalGroup = layout.createSequentialGroup();
-        GroupLayout.ParallelGroup horizontalGroup = layout.createParallelGroup(GroupLayout.Alignment.CENTER);
-
-        for (JComponent component : components) {
-            verticalGroup.addComponent(component);
-            horizontalGroup.addComponent(component);
-        }
-
-        layout.setVerticalGroup(verticalGroup);
-        layout.setHorizontalGroup(horizontalGroup);
-    }
 }

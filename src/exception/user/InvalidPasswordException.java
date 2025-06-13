@@ -1,6 +1,6 @@
-package exception;
+package exception.user;
 
-public class InvalidPasswordException extends Exception {
+public class InvalidPasswordException extends InvaldUserException {
 
 	private static final long serialVersionUID = 1L;
 
