@@ -1,6 +1,6 @@
 package exception.user;
 
-public class InvalidUsernameException extends InvaldUserException {
+public class InvalidUsernameException extends InvalidUserException {
 
 	private static final long serialVersionUID = 1L;
 

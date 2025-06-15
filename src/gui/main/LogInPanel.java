@@ -5,7 +5,7 @@ import javax.swing.*;
 
 import controller.Controller;
 import exception.user.*;
-import gui.GUIMaker;
+import gui.maker.GUIMaker;
 
 class LogInPanel extends GUIMaker {
 	
@@ -36,9 +36,7 @@ class LogInPanel extends GUIMaker {
 	private void logInValidation(String username, char[] password) {
 		try {
         	controller.userValidation(username, password);
-        } catch (InvalidUsernameException error) {
-        	showErrorMessage(error.getMessage());
-        } catch (InvalidPasswordException error) {
+        } catch (InvalidUserException error) {
         	showErrorMessage(error.getMessage());
         } catch (Exception error) {
         	showErrorMessage("Si è verificato un problema anomalo!");
@@ -48,13 +46,17 @@ class LogInPanel extends GUIMaker {
 	private void createComponents() {
 		JLabel logoLabel = getResizedLogo(0.25);
 		
+		JLabel usernameLabel = createWhiteLabel("Username");
         JTextField usernameField = createWhiteRoundedTextField(20);
+        
+        JLabel passwordLabel = createWhiteLabel("Password");
         JPasswordField passwordField = createWhiteRoundedPasswordField(20);
         
         JButton logInButton = createGreenOutlinedButton("Accedi");
-        JButton signUpButton = createWhiteUnderlineButton("Registrati");
+        JButton signUpButton = createWhiteUnderlineButton("Non sei ancora registrato?");
 
         logInButton.addMouseListener(new MouseAdapter() {
+        	@Override
             public void mouseClicked(MouseEvent e) {
             	String username = usernameField.getText();
                 char[] password = passwordField.getPassword();
@@ -64,13 +66,15 @@ class LogInPanel extends GUIMaker {
         });
 
         signUpButton.addMouseListener(new MouseAdapter() {
+        	@Override
             public void mouseClicked(MouseEvent e) {
             	controller.mainWindowSwitchTo("SignUp");
             	cleanInfoLabel();
             }
         });
 		
-		createCenteredTopDownGroupLayout(panel, logoLabel, usernameField, passwordField, infoLabel, logInButton, signUpButton);
+		createCenteredTopDownGroupLayout(panel, logoLabel, usernameLabel, usernameField, passwordLabel, passwordField,
+				infoLabel, logInButton, signUpButton);
 		
 		setEqualSizeGroupLayout(panel, usernameField, passwordField);
 	}

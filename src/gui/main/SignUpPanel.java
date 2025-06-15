@@ -5,7 +5,7 @@ import javax.swing.*;
 
 import controller.Controller;
 import exception.user.*;
-import gui.GUIMaker;
+import gui.maker.GUIMaker;
 
 class SignUpPanel extends GUIMaker {
 	
@@ -42,9 +42,7 @@ class SignUpPanel extends GUIMaker {
 		try {
         	controller.userValidation(name, surname, username, password, university);
         	showSuccessMessage("Utente registrato corretamente!");
-        } catch (InvalidUsernameException error) {
-        	showErrorMessage(error.getMessage());
-        } catch (InvalidPasswordException error) {
+        } catch (InvalidUserException error) {
         	showErrorMessage(error.getMessage());
         } catch (Exception error) {
         	showErrorMessage("Si è verificato un problema anomalo!");
@@ -54,17 +52,26 @@ class SignUpPanel extends GUIMaker {
     private void createComponents() {
     	JLabel logoLabel = getResizedLogo(0.25);
         
+    	JLabel nameLabel = createWhiteLabel("Nome");
         JTextField nameField = createWhiteRoundedTextField(20);
+        
+        JLabel surnameLabel = createWhiteLabel("Cognome");
         JTextField surnameField = createWhiteRoundedTextField(20);
+        
+        JLabel usernameLabel = createWhiteLabel("Username");
         JTextField usernameField = createWhiteRoundedTextField(20);
 
+        JLabel passwordLabel = createWhiteLabel("Password");
         JPasswordField passwordField = createWhiteRoundedPasswordField(20);
-        JComboBox<String> universityCombo = createWhiteRoundedComboBox(controller.getUniversityList());
+        
+        JLabel universityLabel = createWhiteLabel("Università");
+        JComboBox<String> universityCombo = createWhiteComboBox(controller.getUniversityList());
 
         JButton signUpButton = createGreenOutlinedButton("Registrati");
-        JButton logInButton = createWhiteUnderlineButton("Accedi");
+        JButton logInButton = createWhiteUnderlineButton("Vuoi effettuare l'accesso?");
 
         signUpButton.addMouseListener(new MouseAdapter() {
+        	@Override
             public void mouseClicked(MouseEvent e) {
             	String name = nameField.getText();
             	String surname = surnameField.getText();
@@ -77,13 +84,16 @@ class SignUpPanel extends GUIMaker {
         });
 
         logInButton.addMouseListener(new MouseAdapter() {
+        	@Override
             public void mouseClicked(MouseEvent e) {
             	controller.mainWindowSwitchTo("LogIn");
             	cleanInfoLabel();
             }
         });
         
-        createCenteredTopDownGroupLayout(panel, logoLabel, nameField, surnameField, usernameField, passwordField, universityCombo, infoLabel, signUpButton, logInButton);
+        createCenteredTopDownGroupLayout(panel, logoLabel, nameLabel, nameField, surnameLabel, surnameField,
+        		usernameLabel, usernameField, passwordLabel, passwordField, universityLabel, universityCombo,
+        		infoLabel, signUpButton, logInButton);
         
         setEqualSizeGroupLayout(panel, nameField, surnameField, usernameField, passwordField, universityCombo);
     }

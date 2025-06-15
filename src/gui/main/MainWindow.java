@@ -4,9 +4,10 @@ import java.awt.*;
 import javax.swing.*;
 
 import controller.Controller;
-import gui.GUIMaker;
+import gui.WindowInterface;
+import gui.maker.GUIMaker;
 
-public class MainWindow extends GUIMaker {
+public class MainWindow extends GUIMaker implements WindowInterface {
 	
 	private JFrame frame = new JFrame();
 
@@ -23,14 +24,17 @@ public class MainWindow extends GUIMaker {
         show();
     }
     
+    @Override
     public void show() {
     	frame.setVisible(true);
     }
     
+    @Override
     public void hide() {
     	frame.setVisible(false);
     }
     
+    @Override
     public void switchTo(String panel) {
     	CardLayout cardLayout = (CardLayout) frame.getContentPane().getLayout();
     	

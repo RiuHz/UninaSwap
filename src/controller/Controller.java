@@ -7,13 +7,13 @@ import dao.user.*;
 import exception.user.*;
 import dao.university.*;
 
+import gui.WindowInterface;
 import gui.main.MainWindow;
 
 public class Controller {
 	
-	private MainWindow mainWindow;
+	private WindowInterface mainWindow;
 	private UniversityDAOInterface universityDAO = new UniversityDAOPostgre();
-	// private appFrame = null;
 	private UserDAOInterface userDAO = new UserDAOPostgre();
 
     public Controller() {
@@ -32,17 +32,13 @@ public class Controller {
     	mainWindow.switchTo(panel);
     }
 
-    public void userValidation(String username, char[] password) throws InvaldUserException {
+    public void userValidation(String username, char[] password) throws InvalidUserException {
     	throw new InvalidPasswordException("(Password) Test!");
     }
     
-    public void userValidation(String name, String surname, String username, char[] password, String university) throws InvaldUserException {
+    public void userValidation(String name, String surname, String username, char[] password, String university) throws InvalidUserException {
     	throw new InvalidUsernameException("(Username) Test!");
     }
-
-	public void validateRegistration(String username, String password, String name, String surname, String university) {
-		
-	}
 
 	public Vector<String> getUniversityList() {
 		return universityDAO.getNamesList();
