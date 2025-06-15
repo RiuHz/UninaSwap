@@ -1,10 +1,10 @@
 package exception.user;
 
-public abstract class InvaldUserException extends Exception {
+public class InvalidUserException extends Exception {
 	
 	private static final long serialVersionUID = 1L;
 
-	InvaldUserException(String message) {
+	InvalidUserException(String message) {
 		super(message);
 	}
 	
