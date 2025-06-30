@@ -1,53 +1,61 @@
 package gui.main;
 
 import java.awt.*;
+import java.net.URL;
+
 import javax.swing.*;
 
-import controller.Controller;
+import controller.MainController;
 import gui.WindowInterface;
-import gui.maker.GUIMaker;
 
-public class MainWindow extends GUIMaker implements WindowInterface {
+public class MainWindow extends JFrame implements WindowInterface {
 	
-	private JFrame frame = new JFrame();
+    private static final long serialVersionUID = 1L;
 
-    public MainWindow(Controller controller) {
+	public MainWindow(MainController controller) {
         
         setWindowSettings();
         
         LogInPanel logIn = new LogInPanel(controller);
         SignUpPanel signUp = new SignUpPanel(controller);
         
-        frame.getContentPane().add(logIn.getPanel(), "LogIn");
-        frame.getContentPane().add(signUp.getPanel(), "SignUp");
+        getContentPane().add(logIn, "LogIn");
+        getContentPane().add(signUp, "SignUp");
         
-        show();
+        showWindow();
     }
     
     @Override
-    public void show() {
-    	frame.setVisible(true);
+    public void showWindow() {
+    	setVisible(true);
     }
     
     @Override
-    public void hide() {
-    	frame.setVisible(false);
+    public void hideWindow() {
+    	setVisible(false);
     }
     
     @Override
     public void switchTo(String panel) {
-    	CardLayout cardLayout = (CardLayout) frame.getContentPane().getLayout();
+    	CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
     	
-    	cardLayout.show(frame.getContentPane(), panel);
+    	cardLayout.show(getContentPane(), panel);
     }
     
     private void setWindowSettings() {
-    	frame.setTitle("Unina Swap");
-    	frame.setIconImage(getIconImage());
-    	frame.setSize(800, 600);
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.getContentPane().setLayout(new CardLayout());
+    	setTitle("Unina Swap");
+    	setIconImage(getIcon());
+    	setSize(800, 600);
+    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        getContentPane().setLayout(new CardLayout());
     }
+    
+	private Image getIcon() {
+		URL iconURL = getClass().getResource("/img/icon.png");
+		ImageIcon icon = new ImageIcon(iconURL);
+		
+		return icon.getImage();
+	}
 
 }

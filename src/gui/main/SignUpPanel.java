@@ -1,27 +1,37 @@
 package gui.main;
 
+import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.TextAttribute;
+import java.net.URL;
+import java.util.Map;
+
 import javax.swing.*;
 
-import controller.Controller;
+import controller.MainController;
 import exception.user.*;
-import gui.maker.GUIMaker;
 
-class SignUpPanel extends GUIMaker {
+class SignUpPanel extends JPanel {
 	
-	private Controller controller;
+	private static final long serialVersionUID = 1L;
+
+	private MainController controller;
 	
-	private JPanel panel = createBluePanel();
-	private JLabel infoLabel = createWhiteLabel(" ");
+	private final Font verdanaFont = new Font("Verdana", Font.PLAIN, 16);
 	
-	SignUpPanel(Controller controller) {
+	private final Color black = new Color(0x262626);
+	private final Color blue = new Color(0x0F3A5F);
+	private final Color green = new Color(0x31E981);
+	private final Color red = new Color(0xDF2935);
+	
+	private JLabel infoLabel = createLabel(" ", Color.white);
+	
+	SignUpPanel(MainController controller) {
 		this.controller = controller;
 		
+		setBackground(blue);
+		
 		createComponents();
-	}
-	
-	JPanel getPanel() {
-		return panel;
 	}
 	
 	private void cleanInfoLabel() {
@@ -29,16 +39,16 @@ class SignUpPanel extends GUIMaker {
 	}
 	
 	private void showErrorMessage(String message) {
-		setRedColor(infoLabel);
+		infoLabel.setForeground(red);
 		infoLabel.setText(message);
 	}
 	
 	private void showSuccessMessage(String message) {
-		setGreenColor(infoLabel);
+		infoLabel.setForeground(green);
 		infoLabel.setText(message);
 	}
 	
-	private void signUpValidation(String name, String surname, String username, char[] password, String university) {
+	private void signUpClicked(String name, String surname, String username, char[] password, String university) {
 		try {
         	controller.userValidation(name, surname, username, password, university);
         	showSuccessMessage("Utente registrato corretamente!");
@@ -52,23 +62,23 @@ class SignUpPanel extends GUIMaker {
     private void createComponents() {
     	JLabel logoLabel = getResizedLogo(0.25);
         
-    	JLabel nameLabel = createWhiteLabel("Nome");
-        JTextField nameField = createWhiteRoundedTextField(20);
+    	JLabel nameLabel = createLabel("Nome", Color.white);
+        JTextField nameField = new RoundedTextField(20, Color.white);
         
-        JLabel surnameLabel = createWhiteLabel("Cognome");
-        JTextField surnameField = createWhiteRoundedTextField(20);
+        JLabel surnameLabel = createLabel("Cognome", Color.white);
+        JTextField surnameField = new RoundedTextField(20, Color.white);
         
-        JLabel usernameLabel = createWhiteLabel("Username");
-        JTextField usernameField = createWhiteRoundedTextField(20);
+        JLabel usernameLabel = createLabel("Username", Color.white);
+        JTextField usernameField = new RoundedTextField(20, Color.white);
 
-        JLabel passwordLabel = createWhiteLabel("Password");
-        JPasswordField passwordField = createWhiteRoundedPasswordField(20);
+        JLabel passwordLabel = createLabel("Password", Color.white);
+        JPasswordField passwordField = new RoundedPasswordField(20, Color.white);
         
-        JLabel universityLabel = createWhiteLabel("Università");
-        JComboBox<String> universityCombo = createWhiteComboBox(controller.getUniversityList());
+        JLabel universityLabel = createLabel("Università", Color.white);
+        JComboBox<String> universityCombo = new JComboBox<String>(controller.getUniversityList());
 
-        JButton signUpButton = createGreenOutlinedButton("Registrati");
-        JButton logInButton = createWhiteUnderlineButton("Vuoi effettuare l'accesso?");
+        JButton signUpButton = new OutlinedButton("Registrati", green);
+        JButton logInButton = new UnderlineButton("Vuoi effettuare l'accesso?", Color.white);
 
         signUpButton.addMouseListener(new MouseAdapter() {
         	@Override
@@ -79,22 +89,218 @@ class SignUpPanel extends GUIMaker {
                 char[] password = passwordField.getPassword();
                 String university = (String) universityCombo.getSelectedItem();
                 
-                signUpValidation(name, surname, username, password, university);
+                signUpClicked(name, surname, username, password, university);
             }
         });
 
         logInButton.addMouseListener(new MouseAdapter() {
         	@Override
             public void mouseClicked(MouseEvent e) {
-            	controller.mainWindowSwitchTo("LogIn");
+            	controller.switchTo("LogIn");
             	cleanInfoLabel();
             }
         });
         
-        createCenteredTopDownGroupLayout(panel, logoLabel, nameLabel, nameField, surnameLabel, surnameField,
+        addToLayout(logoLabel, nameLabel, nameField, surnameLabel, surnameField,
         		usernameLabel, usernameField, passwordLabel, passwordField, universityLabel, universityCombo,
         		infoLabel, signUpButton, logInButton);
         
-        setEqualSizeGroupLayout(panel, nameField, surnameField, usernameField, passwordField, universityCombo);
+        linkLayoutSize(nameField, surnameField, usernameField, passwordField, universityCombo);
     }
+    
+    protected void addToLayout(JComponent ...components) {
+        GroupLayout layout = new GroupLayout(this);
+        
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+        
+        GroupLayout.SequentialGroup verticalGroup = layout.createSequentialGroup();
+        GroupLayout.ParallelGroup horizontalGroup = layout.createParallelGroup(GroupLayout.Alignment.CENTER);
+        
+        verticalGroup.addGap(0, 0, Integer.MAX_VALUE);
+        horizontalGroup.addGap(0, 0, Integer.MAX_VALUE);
+
+        for (JComponent component : components) {
+            verticalGroup.addComponent(component, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE);
+            horizontalGroup.addComponent(component, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE);
+        }
+        
+        verticalGroup.addGap(0, 0, Integer.MAX_VALUE);
+
+        layout.setVerticalGroup(verticalGroup);
+        layout.setHorizontalGroup(horizontalGroup);
+        
+        this.setLayout(layout);
+    }
+    
+    protected void linkLayoutSize(JComponent ...components) {
+    	GroupLayout layout = (GroupLayout) this.getLayout();
+    	
+        layout.linkSize(components);
+    }
+    
+	protected JLabel getResizedLogo(double sizeMultiplier) {
+		URL logoURL = getClass().getResource("/img/logo.png");
+		ImageIcon logo = new ImageIcon(logoURL);
+		
+		int width = (int) (logo.getIconWidth() * sizeMultiplier);
+		int height = (int) (logo.getIconHeight() * sizeMultiplier);
+		
+		Image resizedLogo = logo.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH); 
+		
+		return new JLabel(new ImageIcon(resizedLogo));
+	}
+	
+    protected JLabel createLabel(String text, Color color) {
+    	JLabel label = new JLabel(text);
+    	label.setFont(verdanaFont);
+    	label.setForeground(color);
+        
+        return label;
+    }
+    
+    protected class RoundedTextField extends JTextField {
+
+        private static final long serialVersionUID = 1L;
+        private Color color;
+
+		public RoundedTextField(int columns, Color color) {
+	        super(columns);
+	        
+	        this.color = color;
+	        setTextComponentSettings(this);
+        }
+
+        @Override
+        protected void paintComponent(Graphics graphic) {        	
+        	Graphics2D rectangular = createRoundedRectangle((Graphics2D) graphic, this, color);
+			    
+			super.paintComponent(rectangular);
+        }
+        
+        private void setTextComponentSettings(JComponent component) {
+        	component.setOpaque(false);
+        	component.setBorder(BorderFactory.createEmptyBorder(2, 15, 2, 15));
+        	
+        	component.setFont(verdanaFont);
+        	component.setForeground(black);
+        }
+        
+        private Graphics2D createRoundedRectangle(Graphics2D graphic, JComponent component, Color color) {
+        	graphic.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    		graphic.setColor(color);
+    		graphic.fillRoundRect(0, 0, component.getWidth(), component.getHeight(), 20, 20);
+    		
+    		return graphic;
+        }
+    }
+    
+    protected class RoundedPasswordField extends JPasswordField {
+
+        private static final long serialVersionUID = 1L;
+        private Color color;
+
+		public RoundedPasswordField(int columns, Color color) {
+	        super(columns);
+	        
+	        this.color = color;
+	        setTextComponentSettings(this);
+        }
+ 
+        @Override
+        protected void paintComponent(Graphics graphic) {        	
+			Graphics2D rectangle = createRoundedRectangle((Graphics2D) graphic, this, color);
+			    
+			super.paintComponent(rectangle);
+        }
+        
+        private void setTextComponentSettings(JComponent component) {
+        	component.setOpaque(false);
+        	component.setBorder(BorderFactory.createEmptyBorder(2, 15, 2, 15));
+        	
+        	component.setFont(verdanaFont);
+        	component.setForeground(black);
+        }
+        
+        private Graphics2D createRoundedRectangle(Graphics2D graphic, JComponent component, Color color) {
+        	graphic.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    		graphic.setColor(color);
+    		graphic.fillRoundRect(0, 0, component.getWidth(), component.getHeight(), 20, 20);
+    		
+    		return graphic;
+        }
+    }
+    
+    protected class OutlinedButton extends JButton {
+    	
+    	private static final long serialVersionUID = 1L;
+    	private Color color;
+    	
+    	public OutlinedButton(String text, Color color) {
+    		super(text);
+    		
+    		this.color = color;
+    		
+    		setButtonComponentSettings(this, color);
+    	}
+    	
+        @Override
+        protected void paintComponent(Graphics graphic) {
+        	Graphics2D background = createRoundedBorder((Graphics2D) graphic, this, color);
+
+            super.paintComponent(background);
+        }
+        
+        private void setButtonComponentSettings(JButton button, Color color) {
+        	button.setOpaque(false);
+            button.setContentAreaFilled(false);
+            button.setBorderPainted(false);
+            button.setFocusable(false);
+            button.setFont(verdanaFont);
+            button.setForeground(color);
+            button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
+        
+        private Graphics2D createRoundedBorder(Graphics2D graphic, JComponent component, Color color) {
+        	graphic.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    		graphic.setColor(color);
+    		graphic.setStroke(new BasicStroke(3));
+    		graphic.drawRoundRect(0, 0, component.getWidth(), component.getHeight(), 20, 20);
+    		
+    		return graphic;
+        }
+    }
+    
+    protected class UnderlineButton extends JButton {
+    	
+    	private static final long serialVersionUID = 1L;
+    	
+    	public UnderlineButton(String text, Color color) {
+    		super(text);
+    		
+    		setButtonComponentSettings(this, color);
+    		setUnderlineText();
+    	}
+    	
+    	private void setUnderlineText() {
+    		Map<TextAttribute, Object> underlineFontAttributes = new java.util.HashMap<TextAttribute, Object>(verdanaFont.getAttributes());
+    		
+    		underlineFontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
+    		
+    		Font underlineFont = verdanaFont.deriveFont(underlineFontAttributes);
+    		
+    		this.setFont(underlineFont);
+    	}
+    	
+        private void setButtonComponentSettings(JButton button, Color color) {
+        	button.setOpaque(false);
+            button.setContentAreaFilled(false);
+            button.setBorderPainted(false);
+            button.setFocusable(false);
+            button.setFont(verdanaFont);
+            button.setForeground(color);
+            button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
+    }
+
 }
