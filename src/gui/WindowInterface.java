@@ -2,9 +2,9 @@ package gui;
 
 public interface WindowInterface {
 	
-	public void show();
+	public void showWindow();
 	
-	public void hide();
+	public void hideWindow();
 	
 	public void switchTo(String panel);
 
