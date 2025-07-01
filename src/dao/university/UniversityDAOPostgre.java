@@ -1,18 +1,32 @@
 package dao.university;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
+
+import db.DatabaseManager;
 
 public class UniversityDAOPostgre implements UniversityDAOInterface {
 
-	public Vector<String> getNamesList() {
+    public Vector<String> getNamesList() {
+        Vector<String> universities = new Vector<>();
 
-		// TODO Fai la query per ottenere tutti i nomi di universitàle Università
+        String query = "SELECT Nome FROM Universita ORDER BY Nome";
 
-		Vector<String> p = new Vector<String>();
+        try (
+            Connection conn = DatabaseManager.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery()
+        ) {
+            while (rs.next()) {
+                universities.add(rs.getString("Nome"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-		p.add("Università di Napoli Federico II");
-
-
-		return p;
-	}
+        return universities;
+    }
 }
