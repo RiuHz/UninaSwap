@@ -1,4 +1,4 @@
-package dao.user;
+package dao.user.copy;
 
 import entity.UserEntity;
 import exception.user.InvalidUserException;

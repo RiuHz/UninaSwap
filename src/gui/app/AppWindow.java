@@ -9,17 +9,19 @@ import controller.AppController;
 import gui.WindowInterface;
 
 public class AppWindow extends JFrame implements WindowInterface {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private JPanel mainPanel = new JPanel();
-	
+
 	public AppWindow(AppController controller) {
-		
+
 		setWindowSettings();
 		setHeaderPanel(controller);
 		setWindowMainPanel(controller);
-		
+		//modifica
+		switchTo("Gallery");
+
 	}
 
 	@Override
@@ -35,10 +37,10 @@ public class AppWindow extends JFrame implements WindowInterface {
 	@Override
 	public void switchTo(String panel) {
 		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-		
+
 		cardLayout.show(mainPanel, panel);
 	}
-	
+
 	private void setWindowSettings() {
 		setTitle("Bentornato su Unina Swap!");
 		setIconImage(getIcon());
@@ -47,32 +49,36 @@ public class AppWindow extends JFrame implements WindowInterface {
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 	}
-	
+
 	private void setHeaderPanel(AppController controller) {
 		HeaderPanel header = new HeaderPanel(controller);
-		
+
 		getContentPane().add(header, BorderLayout.NORTH);
 	}
-	
+
 	private void setWindowMainPanel(AppController controller) {
 		mainPanel.setLayout(new CardLayout());
-		
+
 		getContentPane().add(mainPanel, BorderLayout.CENTER);
-		
+
 		addToMainPanel(new HomePanel(controller), "Home");
 		addToMainPanel(new InventoryPanel(controller), "Inventory");
 		addToMainPanel(new ListingsPanel(controller), "Listings");
 		addToMainPanel(new OffersPanel(controller), "Offers");
+
+		//modifiche
+		addToMainPanel(new ProductGalleryPanel(controller), "Gallery");
+
 	}
-	
+
 	private void addToMainPanel(JPanel panel, String name) {
     	mainPanel.add(panel, name);
 	}
-	
+
 	private Image getIcon() {
 		URL iconURL = getClass().getResource("/img/icon.png");
 		ImageIcon icon = new ImageIcon(iconURL);
-		
+
 		return icon.getImage();
 	}
 }

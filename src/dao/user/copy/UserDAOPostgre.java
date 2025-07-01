@@ -1,4 +1,4 @@
-package dao.user;
+package dao.user.copy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
