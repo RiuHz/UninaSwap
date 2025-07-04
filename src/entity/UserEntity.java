@@ -20,7 +20,7 @@ public class UserEntity {
         this.password = password;
     }
 
-    // Getter methods
+
     public String getName() {
         return name;
     }
