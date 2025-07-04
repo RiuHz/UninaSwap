@@ -2,16 +2,17 @@ package gui.app;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import entity.CardEntity;
 
 public class CardPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    public CardPanel(CardEntity card) {
+    public CardPanel(CardEntity card, JPanel mainPanel, CardLayout cardLayout) {
         setPreferredSize(new Dimension(200, 300));
-        setMaximumSize(new Dimension(200, 300));
-        setMinimumSize(new Dimension(200, 300));
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
@@ -49,5 +50,16 @@ public class CardPanel extends JPanel {
         infoPanel.add(new JLabel("Consegna: " + (card.getConsegna() != null ? card.getConsegna() : "null")));
 
         add(infoPanel, BorderLayout.CENTER);
+
+        // click per mostrare il dettaglio
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                CardDetailPanel detailPanel = new CardDetailPanel(card, mainPanel, cardLayout);
+                mainPanel.add(detailPanel, "detail");
+                cardLayout.show(mainPanel, "detail");
+            }
+        });
+
     }
 }

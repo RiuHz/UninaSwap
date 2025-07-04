@@ -13,14 +13,18 @@ public class CardEntity {
     private String descrizione;
     private String categoria;
     private String tipo;
+    private int prodotto_id;
+    private String username;
 
-    public CardEntity(String nomeProdotto, byte[] immagine, String consegna, String descrizione, String categoria, String tipo) {
+    public CardEntity(String nomeProdotto, byte[] immagine, String consegna, String descrizione, String categoria, String tipo,int prodotto_id,String username) {
         this.nomeProdotto = nomeProdotto;
         this.immagine = immagine;
         this.consegna = consegna;
         this.descrizione = descrizione;
         this.categoria = categoria;
         this.tipo = tipo;
+        this.prodotto_id=prodotto_id;
+        this.username=username;
     }
 
     public String getNomeProdotto() { return nomeProdotto; }
@@ -29,6 +33,8 @@ public class CardEntity {
     public String getDescrizione() { return descrizione; }
     public String getCategoria() { return categoria; }
     public String getTipo() { return tipo; }
+    public int getProdotto_id() {return prodotto_id;}
+    public String getUsername() {return username;}
 
     public ImageIcon getImageIcon() {
         try {

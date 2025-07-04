@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import controller.MainController;
 import exception.user.*;
+import session.SessionManager;
 
 class LogInPanel extends JPanel {
 
@@ -45,6 +46,8 @@ class LogInPanel extends JPanel {
 	private void logInClicked(String username, char[] password) {
 		try {
         	controller.userValidation(username, password);
+            SessionManager.setUsernameLoggato(username);
+            controller.switchTo("Gallery");
         } catch (InvalidUserException error) {
         	showErrorMessage(error.getMessage());
         } catch (Exception error) {

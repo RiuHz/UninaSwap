@@ -21,6 +21,7 @@ public class HomePanel extends JPanel {
 		
 		createComponents();
 		
+		
 	}
 	
 	protected void createComponents() {
