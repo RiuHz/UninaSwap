@@ -2,30 +2,22 @@ package controller;
 
 import javax.swing.*;
 
-import DTO.UserDTOPostgre;
-
+import java.sql.SQLException;
 import java.util.*;
 
-import entity.UserEntity;
-
-import dao.user.*;
-import exception.user.*;
-import dao.university.*;
-
+import daoNew.user.*;
+import daoNew.university.*;
+import dto.UserDTO;
 import gui.WindowInterface;
 import gui.main.MainWindow;
 
 public class MainController {
-
-	private AppController appController;
+	
 	private WindowInterface mainWindow;
-	private UniversityDAOInterface universityDAO = new UniversityDAOPostgre();
-
-
-	UserEntity utente;
-
-	UserDTOPostgre userDTO;
-
+	
+	private UserDAOInterface UserDAO = new UserDAOPostgre();
+	private UniversityDAOInterface UniversitaDAO = new UniversityDAOPostgre();
+	
     public MainController() {
         mainWindow = new MainWindow(this);
 
@@ -39,29 +31,28 @@ public class MainController {
         });
     }
 
-    // TODO metodo per passare all'altro controller quando l'utente accede
-
     public void switchTo(String panel) {
     	mainWindow.switchTo(panel);
     }
+    
+    private void openApp(UserDTO loggedUser) {
+    	mainWindow.hideWindow();
+    	
+    	new AppController(loggedUser);
+    }
+    
+    public void logInUser(String username, char[] password) throws SQLException {
+    	UserDTO loggedUser = UserDAO.logInUser(username, password);
 
-    public void userValidation(String username, char[] password) throws InvalidUserException {
-    	utente= new UserEntity(username,password);
-    	userDTO=new UserDTOPostgre(utente);
-    	userDTO.checkLogin();
-        appController = new AppController(this);//io qua gli passerei il nome utente
+        openApp(loggedUser);
     }
 
-    public void userValidation(String name, String surname, String username, char[] password, String university) throws InvalidUserException {
-    	utente= new UserEntity(name,surname,username,password,university);
-    	userDTO=new UserDTOPostgre(utente);
-    	userDTO.verifyAll();
-    	userDTO.registerUser();
+    public void signUpUser(String name, String surname, String username, char[] password, String university) throws SQLException {
+    	UserDAO.create(name, surname, username, password, university);
     }
 
-    // TODO Dovrebbe ritornare un vettore di university
-	public Vector<String> getUniversityList() {
-		return universityDAO.getNamesList();
+	public Vector<String> getUniversityList() throws SQLException {
+		return UniversitaDAO.getNamesList();
 	}
 
 }

@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Map;
 
 import javax.swing.*;
@@ -28,20 +29,34 @@ class HeaderPanel extends JPanel {
 
 		createComponents();
 	}
-
-	// TODO Il logo deve riporate alla home quando cliccato
-	// TODO Il notifyButton alla sezione proposte
-	// TODO La userDroplist invece apre un menù e in base a cosa si clicca
+	
+	private int getNumeroProposte() {
+		int numeroOfferte = 0;
+		
+		try {
+			numeroOfferte = controller.getNumeroProposte();
+		} catch (SQLException SQLError) {
+			JOptionPane.showMessageDialog(this, SQLError.getLocalizedMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		return numeroOfferte;
+	}
 
 	private void createComponents() {
 		JLabel logo = getClickableLogo(0.25);
-		JButton notifyButton = getNotifyButton(Color.white);
-		JLabel userDroplist = getUserDropList(Color.white);
+		JButton nuoveOfferteLabel = getOfferteLabel(Color.white);
+		JLabel profileLabel = getProfileLabel(Color.white);
 
-		addToLayout(logo, notifyButton, userDroplist);
+		addToLayout(logo, nuoveOfferteLabel, profileLabel);
 
-		linkLayoutSize(logo, userDroplist);
+		linkLayoutSize(logo, profileLabel);
 	}
+	
+    /*
+     * 
+     * Codice per la gestione e creazione della GUI
+     * 
+     */
 
 	private JLabel getClickableLogo(double size) {
 		JLabel logo = getResizedLogo(size);
@@ -57,30 +72,30 @@ class HeaderPanel extends JPanel {
         return logo;
 	}
 
-	private JButton getNotifyButton(Color color) {
-		JButton notifyButton = new UnderlineButton("Offerte Ricevute", color); // TODO Qua dovrei fare una query per vedere il numero di offerte!
+	private JButton getOfferteLabel(Color color) {
+		JButton notifyButton = new UnderlineButton("Hai " + getNumeroProposte() + " proposte da valutare", color);
 
 		notifyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         notifyButton.addMouseListener(new MouseAdapter() {
         	@Override
             public void mouseClicked(MouseEvent e) {
-            	controller.switchTo("Offers");
+            	controller.switchTo("Offerte");
             }
         });
 
         return notifyButton;
 	}
 
-	private JLabel getUserDropList(Color color) {
-		JLabel userDropList = createLabel("Utente", Color.white); // TODO doveri fare la Droplist! (Utente loggato nel controller?)
+	private JLabel getProfileLabel(Color color) {
+		JLabel userDropList = createLabel("Il mio Profilo", Color.white);
 
 		userDropList.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 		userDropList.addMouseListener(new MouseAdapter() {
         	@Override
             public void mouseClicked(MouseEvent e) {
-            	controller.switchTo("Inventory");
+            	controller.switchTo("Profilo");
             }
         });
 

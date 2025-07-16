@@ -4,12 +4,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.*;
 
 import controller.MainController;
-import exception.user.*;
 
 class SignUpPanel extends JPanel {
 	
@@ -50,12 +51,10 @@ class SignUpPanel extends JPanel {
 	
 	private void signUpClicked(String name, String surname, String username, char[] password, String university) {
 		try {
-        	controller.userValidation(name, surname, username, password, university);
+        	controller.signUpUser(name, surname, username, password, university);
         	showSuccessMessage("Utente registrato corretamente!");
-        } catch (InvalidUserException error) {
-        	showErrorMessage(error.getMessage());
-        } catch (Exception error) {
-        	showErrorMessage("Si è verificato un problema anomalo!");
+        } catch (SQLException SQLError) {
+        	showErrorMessage(SQLError.getLocalizedMessage().replace("ERROR: ", "").split("\\n")[0]);
         }
 	}
 	   
@@ -75,7 +74,7 @@ class SignUpPanel extends JPanel {
         JPasswordField passwordField = new RoundedPasswordField(20, Color.white);
         
         JLabel universityLabel = createLabel("Università", Color.white);
-        JComboBox<String> universityCombo = new JComboBox<String>(controller.getUniversityList());
+        JComboBox<String> universityCombo = createComboBox(getUniversityList());
 
         JButton signUpButton = new OutlinedButton("Registrati", green);
         JButton logInButton = new UnderlineButton("Vuoi effettuare l'accesso?", Color.white);
@@ -107,6 +106,21 @@ class SignUpPanel extends JPanel {
         
         linkLayoutSize(nameField, surnameField, usernameField, passwordField, universityCombo);
     }
+    
+    private Vector<String > getUniversityList() {
+    	try {
+    		return controller.getUniversityList();
+    	} catch (SQLException SQLError) {
+    		showErrorMessage(SQLError.getMessage());
+    		return new Vector<String>();
+    	}
+    }
+    
+    /*
+     * 
+     * Codice per la gestione e creazione della GUI
+     * 
+     */
     
     protected void addToLayout(JComponent ...components) {
         GroupLayout layout = new GroupLayout(this);
@@ -157,6 +171,14 @@ class SignUpPanel extends JPanel {
     	label.setForeground(color);
         
         return label;
+    }
+    
+    protected <Type> JComboBox<Type> createComboBox(Vector<Type> elements) {
+    	JComboBox<Type> comboBox = new JComboBox<Type>(elements);
+    	comboBox.setFont(verdanaFont);
+    	comboBox.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    	
+    	return comboBox;
     }
     
     protected class RoundedTextField extends JTextField {

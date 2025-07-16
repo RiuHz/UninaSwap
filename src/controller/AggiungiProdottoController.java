@@ -1,8 +1,6 @@
 package controller;
 
-import DTO.AggiungiProdottoDTO;
-import entity.Prodotto;
-import exceptionInserimento.*;
+import dto_old.AggiungiProdottoDTO;
 
 public class AggiungiProdottoController {
 

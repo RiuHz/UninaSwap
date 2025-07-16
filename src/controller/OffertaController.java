@@ -3,7 +3,7 @@ package controller;
 import java.sql.SQLException;
 import java.util.List;
 
-import offerta.OffertaDAOPostgre;
+import dao.offerta.OffertaDAOPostgre;
 import session.SessionManager;
 import entity.OffertaEntity;
 

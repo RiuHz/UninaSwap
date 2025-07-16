@@ -6,29 +6,25 @@ import java.net.URL;
 import javax.swing.*;
 
 import controller.AppController;
-import controller.OffertaController;
 import gui.WindowInterface;
+import gui.dialog.FiltroDialog;
 
 public class AppWindow extends JFrame implements WindowInterface {
 
 	private static final long serialVersionUID = 1L;
-	private final CardLayout cardLayout;
-	private final JPanel mainPanel;
-	private AppController controller;
-	private  OffertaController controllerOne;
+	
+	private JPanel mainPanel = new JPanel();
+	
+	private FiltroDialog finestraFiltri;
 
 	public AppWindow(AppController controller) {
-		this.controller=controller;
-		controllerOne=new OffertaController(controller);
-		cardLayout = new CardLayout();
-		mainPanel = new JPanel(cardLayout);
 
 		setWindowSettings();
+		createDialogs(controller);
 		setHeaderPanel(controller);
 		setWindowMainPanel(controller);
-		//modifica
-		switchTo("Gallery");
-
+		
+		showWindow();
 	}
 
 	@Override
@@ -44,23 +40,8 @@ public class AppWindow extends JFrame implements WindowInterface {
 	@Override
 	public void switchTo(String panel) {
 		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-		//il panel offers non può essere creato all'avvio perche per essere popolato ha bisogno di avere lo username della persona loggata dato che più giu l'aggiunta dei panel avviene prima del login il panel riceve null come username loggato quindi lo devo fare dopo
-	    if (panel.equals("Offers") && !panelAlreadyAdded("Offers")) {
-			addToMainPanel(new OffersPanel(controllerOne,controller), "Offers");
-	    }
 
 		cardLayout.show(mainPanel, panel);
-	}
-//ho aggiunto sti 2
-	private boolean panelAlreadyAdded(String name) {
-	    for (Component comp : mainPanel.getComponents()) {
-	        if (mainPanel.getLayout() instanceof CardLayout layout) {
-	            if (name.equals(mainPanel.getClientProperty(comp))) {
-	                return true;
-	            }
-	        }
-	    }
-	    return false;
 	}
 
 	private void setWindowSettings() {
@@ -79,24 +60,17 @@ public class AppWindow extends JFrame implements WindowInterface {
 	}
 
 	private void setWindowMainPanel(AppController controller) {
-		//mainPanel.setLayout(new CardLayout());
+		mainPanel.setLayout(new CardLayout());
 
 		getContentPane().add(mainPanel, BorderLayout.CENTER);
 
-		addToMainPanel(new HomePanel(controller), "Home");
-		addToMainPanel(new InventoryPanel(controller), "Inventory");
-		addToMainPanel(new ListingsPanel(controller), "Listings");
-
-
-		//modifiche
-		ProductGalleryPanel galleryPanel = new ProductGalleryPanel(controller, mainPanel, cardLayout);
-		addToMainPanel(galleryPanel, "Gallery");
-
-
+		mainPanel.add(new HomePanel(controller, finestraFiltri), "Home");
+		mainPanel.add(new ProposteRicevutePanel(controller), "Offerte");
+		mainPanel.add(new ProfiloPanel(controller), "Profilo");
 	}
-
-	private void addToMainPanel(JPanel panel, String name) {
-    	mainPanel.add(panel, name);
+	
+	private void createDialogs(AppController controller) {
+		finestraFiltri = new FiltroDialog(this, controller);
 	}
 
 	private Image getIcon() {

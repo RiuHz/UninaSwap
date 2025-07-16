@@ -1,0 +1,30 @@
+		ProdottoDTO prodotto = new ProdottoDTO(1, "Prodotto Test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in.", null, new CategoriaDTO(1, "Categoria Test"), "User Test");
+		AnnuncioRegaloDTO annuncioRegalo = new AnnuncioRegaloDTO(1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in.", new Date(1L), "Attivo", prodotto);
+		AnnuncioScambioDTO annuncioScambio = new AnnuncioScambioDTO(1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in.", new Date(1L), "Attivo", prodotto);
+		AnnuncioVenditaDTO annuncioVendita = new AnnuncioVenditaDTO(1, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in.", new Date(1L), 2.4, "Attivo", prodotto);
+		PropostaRegaloDTO propostaRegalo = new PropostaRegaloDTO("In Attesa", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in.", "Test User", annuncioRegalo);
+		PropostaScambioDTO propostaScambio = new PropostaScambioDTO(1, "In Attesa", "Test User", annuncioScambio, new ArrayList<ProdottoDTO>(Arrays.asList(prodotto, prodotto, prodotto)));
+		PropostaVenditaDTO propostaVendita = new PropostaVenditaDTO(1.4, "In Attesa", "Test User", annuncioVendita);
+		
+		lista.add(new CardProdotto(prodotto));
+		
+		lista.add(new CardAnnuncioRegalo(annuncioRegalo));
+		lista.add(new CardAnnuncioScambio(annuncioScambio));
+		lista.add(new CardAnnuncioVendita(annuncioVendita));
+		
+		lista.add(new CardPropostaRegaloInviata(null, propostaRegalo));
+		lista.add(new CardPropostaScambioInviata(null, propostaScambio));
+		lista.add(new CardPropostaVenditaInviata(null, propostaVendita));
+		
+		lista.add(new CardPropostaRegaloRicevuta(null, propostaRegalo));
+		lista.add(new CardPropostaScambioRicevuta(null, propostaScambio));
+		lista.add(new CardPropostaVenditaRicevuta(null, propostaVendita));
+		
+		lista.add(new CardPropostaRegaloInviata(null, new PropostaRegaloDTO("Accettata", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in.", "Test User", annuncioRegalo)));
+		lista.add(new CardPropostaScambioInviata(null, new PropostaScambioDTO(1, "Accettata", "Test User", annuncioScambio, new ArrayList<ProdottoDTO>(Arrays.asList(prodotto, prodotto, prodotto)))));
+		lista.add(new CardPropostaVenditaInviata(null, new PropostaVenditaDTO(1.4, "Accettata", "Test User", annuncioVendita)));
+		
+		lista.add(new CardPropostaRegaloInviata(null, new PropostaRegaloDTO("Rifiutata", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in.", "Test User", annuncioRegalo)));
+		lista.add(new CardPropostaScambioInviata(null, new PropostaScambioDTO(1, "Rifiutata", "Test User", annuncioScambio, new ArrayList<ProdottoDTO>(Arrays.asList(prodotto, prodotto, prodotto)))));
+		lista.add(new CardPropostaVenditaInviata(null, new PropostaVenditaDTO(1.4, "Rifiutata", "Test User", annuncioVendita)));
+		

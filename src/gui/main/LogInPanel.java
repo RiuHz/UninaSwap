@@ -4,13 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Map;
 
 import javax.swing.*;
 
 import controller.MainController;
-import exception.user.*;
-import session.SessionManager;
 
 class LogInPanel extends JPanel {
 
@@ -45,13 +44,9 @@ class LogInPanel extends JPanel {
 
 	private void logInClicked(String username, char[] password) {
 		try {
-        	controller.userValidation(username, password);
-            SessionManager.setUsernameLoggato(username);
-            controller.switchTo("Gallery");
-        } catch (InvalidUserException error) {
-        	showErrorMessage(error.getMessage());
-        } catch (Exception error) {
-        	showErrorMessage("Si è verificato un problema anomalo!");
+        	controller.logInUser(username, password);
+        } catch (SQLException SQLerror) {
+        	showErrorMessage(SQLerror.getLocalizedMessage());
         }
 	}
 
@@ -90,6 +85,12 @@ class LogInPanel extends JPanel {
 
 		linkLayoutSize(usernameField, passwordField);
 	}
+	
+    /*
+     * 
+     * Codice per la gestione e creazione della GUI
+     * 
+     */
 
     protected void addToLayout(JComponent ...components) {
         GroupLayout layout = new GroupLayout(this);
