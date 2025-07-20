@@ -1,9 +1,14 @@
 package gui.card.proposta.ricevuta;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-import controller.AppController;
+import controller.ControllerApp;
 import dto.proposte.PropostaVenditaDTO;
 import gui.card.proposta.CardProposta;
 
@@ -11,46 +16,66 @@ public class CardPropostaVenditaRicevuta extends CardProposta {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private PropostaVenditaDTO proposta;
-	
-	public CardPropostaVenditaRicevuta(AppController controller, PropostaVenditaDTO proposta) {
-		this.proposta = proposta;
+	public CardPropostaVenditaRicevuta(ControllerApp controller, PropostaVenditaDTO proposta) {
 		
-		createComponents();
+		creaComponenti(controller, proposta);
+		
 	}
 	
-	@Override
-	public int getIdProdotto() {
-		return proposta.annuncio.prodotto.getId();
+	private void creaComponenti(ControllerApp controller, PropostaVenditaDTO proposta) {
+		JLabel immagine = getImmagineRidimensionata(proposta.getAnnuncio().getProdotto()); 
+		
+		JLabel titolo = creaLabel(proposta.getAnnuncio().getProdotto().getNome());
+		JLabel categoria = creaLabel("Categoria : " + proposta.getAnnuncio().getProdotto().getCategoria());
+		JLabel utenteProposta = creaLabel("Proposta ricevuta da : " + proposta.getUtente());
+		JLabel prezzo = creaLabel("Prezzo originale : €" + proposta.getAnnuncio().getPrezzo() + " - Prezzo proposto : €" + proposta.getProposta()); 
+		
+		JButton bottoneInterazione = getBottoneAccetta(controller, proposta);
+		JButton bottoneRifiuta = getBottoneRifiuta(controller, proposta);
+		
+		aggiungiAlLayout(immagine, bottoneInterazione, bottoneRifiuta, titolo, categoria, utenteProposta, prezzo);
 	}
 	
-	private void createComponents() {
-		JLabel image = getResizedImage(); // TODO Bisogna prenderlo dal DB, dio porco
+	private JButton getBottoneAccetta(ControllerApp controller, PropostaVenditaDTO proposta) {
+		JButton bottoneAccetta = new OutlinedButton("Accetta", verde);
 		
-		JLabel titolo = createLabel(proposta.annuncio.prodotto.getNome());
-		JLabel utenteProposta = createLabel("Proposta ricevuta da : " + proposta.getUser());
-		JLabel prezzo = createLabel("Prezzo originale : €" + proposta.annuncio.getPrezzo() + " - Prezzo proposto : €" + proposta.getProposta()); 
-		
-		JButton bottoneInterazione = getBottoneInterazione();
-		JButton bottoneRifiuta = getBottoneRifiuta();
-		
-		addToLayout(image, bottoneInterazione, bottoneRifiuta, titolo, utenteProposta, prezzo);
-	}
-	
-	private JButton getBottoneInterazione() {
-		JButton bottoneAccetta = new OutlinedButton("Accetta", green);
-		
-		// TODO metodo accetta controller
+		bottoneAccetta.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				bottoneAccettaClick(controller, proposta);
+			}
+		});
 		
 		return bottoneAccetta;
 	}
+	
+	public void bottoneAccettaClick(ControllerApp controller, PropostaVenditaDTO proposta) {
+		try {
+			controller.accettaPropostaVendita(proposta);
+		} catch (SQLException SQLError) {
+    		JOptionPane.showMessageDialog(this, SQLError.getLocalizedMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+    	}
+	}
 
-	private JButton getBottoneRifiuta() {
-		JButton bottoneRifiuta = new OutlinedButton("Rifiuta", red);
+	private JButton getBottoneRifiuta(ControllerApp controller, PropostaVenditaDTO proposta) {
+		JButton bottoneRifiuta = new OutlinedButton("Rifiuta", rosso);
 		
-		// TODO metodo rifiuta controller
+		bottoneRifiuta.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				bottoneRifiutaClick(controller, proposta);
+			}
+		});
 		
 		return bottoneRifiuta;
+	}
+	
+	public void bottoneRifiutaClick(ControllerApp controller, PropostaVenditaDTO proposta) {
+		try {
+			controller.rifiutaPropostaVendita(proposta);
+		} catch (SQLException SQLError) {
+    		JOptionPane.showMessageDialog(this, SQLError.getLocalizedMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+    	}
 	}
 
 }

@@ -10,11 +10,16 @@ public class UniversitaDTO {
 		this.nome = nome;
 	}
 	
-	int getId() {
+	public int getId() {
 		return id;
 	}
 	
-	String getNome() {
+	public String getNome() {
+		return nome;
+	}
+	
+	@Override
+	public String toString() {
 		return nome;
 	}
 

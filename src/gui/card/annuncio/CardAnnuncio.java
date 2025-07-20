@@ -6,84 +6,76 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
+import controller.ControllerApp;
 import dto.annunci.AnnuncioDTO;
-import gui.card.CardDisplay;
+import gui.card.Card;
 
-public abstract class CardAnnuncio extends CardDisplay {
+public abstract class CardAnnuncio extends Card {
 
 	private static final long serialVersionUID = 1L;
-	private AnnuncioDTO annuncio;
 
-	protected CardAnnuncio(AnnuncioDTO annuncio) {
-		this.annuncio = annuncio;
+	protected CardAnnuncio(ControllerApp controller, AnnuncioDTO annuncio) {
 		
-		createComponents();
+		creaComponenti(controller, annuncio);
+		
 	}
 	
-	void createComponents() {
-		JLabel image = getResizedImage(); // TODO Bisogna prenderlo dal DB, dio porco
+	protected abstract JButton getBottoneAnnuncio(ControllerApp controller);
+	
+	protected void creaComponenti(ControllerApp controller, AnnuncioDTO annuncio) {
+		JLabel immagine = getImmagineRidimensionata(annuncio.getProdotto());
 		
-		JLabel titolo = createLabel(annuncio.prodotto.getNome() + " di " + annuncio.prodotto.getUser());
-		JTextArea descrizione = createTextArea("Descrizione : " + annuncio.prodotto.getDescrizione());
-		JTextArea consegna = createTextArea("Consegna : " + annuncio.getConsegna());
-		JLabel data = createLabel("Pubblicato : " + annuncio.getData());
+		JLabel titolo = creaLabel(annuncio.getProdotto().getNome() + " di " + annuncio.getProdotto().getUtente());
+		JLabel categoria = creaLabel("Categoria : " + annuncio.getProdotto().getCategoria());
+		JTextArea descrizione = creaTextArea("Descrizione : " + annuncio.getProdotto().getDescrizione());
+		JTextArea consegna = creaTextArea("Consegna : " + annuncio.getConsegna());
+		JLabel data = creaLabel("Pubblicato : " + annuncio.getData());
 		
-		JButton bottone = getButtonAnnuncio();
+		JButton bottone = getBottoneAnnuncio(controller);
 		
-		addToLayout(image, bottone, titolo, descrizione, consegna, data);
+		aggiungiAlLayout(immagine, bottone, titolo, categoria, descrizione, consegna, data);
 	}
-	
-	protected abstract JButton getButtonAnnuncio();
-	
-	public String getDataAnnuncio() {
-		return annuncio.getData();
-	}
-	
+		
     /*
      * 
      * Codice per la gestione e creazione della GUI
      * 
      */
 	
-    protected void addToLayout(JComponent image, JComponent button, JComponent ...components) {
+    protected void aggiungiAlLayout(JComponent immagine, JComponent bottone, JComponent ...componenti) {
     	GroupLayout layout = new GroupLayout(this);
-    	setLayout(layout);
 
     	layout.setAutoCreateGaps(true);
     	layout.setAutoCreateContainerGaps(true);
 
-    	GroupLayout.ParallelGroup leftColumn = layout.createParallelGroup();
-    	GroupLayout.ParallelGroup centerColumn = layout.createParallelGroup();
-    	GroupLayout.ParallelGroup rightColumn = layout.createParallelGroup(GroupLayout.Alignment.CENTER);
+    	GroupLayout.ParallelGroup colonnaSinistra = layout.createParallelGroup().addComponent(immagine);
+    	GroupLayout.ParallelGroup colonnaCentrale = layout.createParallelGroup();
+    	GroupLayout.ParallelGroup colonnaDestra = layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(bottone);
 
-    	GroupLayout.SequentialGroup centerColumnVertical = layout.createSequentialGroup();
+    	GroupLayout.SequentialGroup colonnaCentraleVerticale = layout.createSequentialGroup();
     	
-	    leftColumn.addComponent(image);
-    	
-    	for (JComponent component : components) {
-    	    centerColumn.addComponent(component);
-    	    centerColumnVertical.addComponent(component);
+    	for (JComponent componente : componenti) {
+    	    colonnaCentrale.addComponent(componente);
+    	    colonnaCentraleVerticale.addComponent(componente);
     	}
-
-	    rightColumn.addComponent(button);
 
     	layout.setHorizontalGroup(
     	    layout.createSequentialGroup()
-    	        .addGroup(leftColumn)
+    	        .addGroup(colonnaSinistra)
     	        .addGap(20)
-    	        .addGroup(centerColumn)
+    	        .addGroup(colonnaCentrale)
     	        .addGap(20)
-    	        .addGroup(rightColumn)
+    	        .addGroup(colonnaDestra)
     	);
 
     	layout.setVerticalGroup(
     	    layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-    	        .addGroup(layout.createSequentialGroup().addComponent(image))
-    	        .addGroup(centerColumnVertical)
-    	        .addGroup(layout.createSequentialGroup().addComponent(button))
+    	        .addGroup(layout.createSequentialGroup().addComponent(immagine))
+    	        .addGroup(colonnaCentraleVerticale)
+    	        .addGroup(layout.createSequentialGroup().addComponent(bottone))
     	);
 
-        this.setLayout(layout);
+        setLayout(layout);
     }
 
 }

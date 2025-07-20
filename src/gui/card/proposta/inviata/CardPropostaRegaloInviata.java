@@ -2,70 +2,90 @@ package gui.card.proposta.inviata;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
-import controller.AppController;
+import controller.ControllerApp;
 import dto.proposte.PropostaRegaloDTO;
 import exception.MessageNotFoundException;
 import gui.card.proposta.CardProposta;
+import gui.dialog.proposta.DialogModificaPropostaRegalo;
 
 public class CardPropostaRegaloInviata extends CardProposta {
 
 	private static final long serialVersionUID = 1L;
 	
-	private PropostaRegaloDTO proposta;
+	private DialogModificaPropostaRegalo DialogModificaPropostaRegalo;
 	
-	public CardPropostaRegaloInviata(AppController controller, PropostaRegaloDTO proposta) {
-		this.proposta = proposta;
+	public CardPropostaRegaloInviata(JFrame finestra, ControllerApp controller, PropostaRegaloDTO proposta) {
+		DialogModificaPropostaRegalo = new DialogModificaPropostaRegalo(finestra, controller, proposta);
 		
-		createComponents();	
+		createComponents(controller, proposta);	
 	}
 	
-	@Override
-	public int getIdProdotto() {
-		return proposta.annuncio.prodotto.getId();
-	}
-	
-	private void createComponents() {
-		JLabel image = getResizedImage(); // TODO Bisogna prenderlo dal DB, dio porco
+	private void createComponents(ControllerApp controller, PropostaRegaloDTO proposta) {
+		JLabel immagine = getImmagineRidimensionata(proposta.getAnnuncio().getProdotto());
 		
-		JLabel titolo = createLabel(proposta.annuncio.prodotto.getNome() + " di " + proposta.annuncio.prodotto.getUser());
+		JLabel titolo = creaLabel(proposta.getAnnuncio().getProdotto().getNome() + " di " + proposta.getAnnuncio().getProdotto().getUtente());
+		JLabel categoria = creaLabel("Categoria : " + proposta.getAnnuncio().getProdotto().getCategoria());
 		JLabel stato = getStato(proposta);
-		JTextArea messaggioLasciato = createTextArea(getMessaggioProposta()); 
+		JTextArea messaggioLasciato = creaTextArea(getMessaggioProposta(proposta)); 
 		
 		JButton bottoneInterazione, bottoneRifiuta;
 		
 		if (proposta.getStato().equals("In Attesa")) {
-			bottoneInterazione = getBottoneInterazione();
-			bottoneRifiuta = getBottoneRifiuta();
+			bottoneInterazione = getBottoneModifica(controller, proposta);
+			bottoneRifiuta = getBottoneRitira(controller, proposta);
 		} else {
-			bottoneInterazione = createGrayedOutButton("Modifica");
-			bottoneRifiuta = createGrayedOutButton("Ritira");
+			bottoneInterazione = creaBottoneGrigio("Modifica");
+			bottoneRifiuta = creaBottoneGrigio("Ritira");
 		}
 		
-		addToLayout(image, bottoneInterazione, bottoneRifiuta, titolo, stato, messaggioLasciato);
+		aggiungiAlLayout(immagine, bottoneInterazione, bottoneRifiuta, titolo, categoria, stato, messaggioLasciato);
 	}
 	
-	private JButton getBottoneInterazione() {
-		JButton bottoneAccetta = new OutlinedButton("Modifica", orange);
+	private JButton getBottoneModifica(ControllerApp controller, PropostaRegaloDTO proposta) {
+		JButton bottoneModifica = new OutlinedButton("Modifica", arancione);
 		
-		// TODO metodo accetta controller
+		bottoneModifica.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DialogModificaPropostaRegalo.mostraDialog();
+			}
+		});
 		
-		return bottoneAccetta;
+		return bottoneModifica;
 	}
 
-	private JButton getBottoneRifiuta() {
-		JButton bottoneRifiuta = new OutlinedButton("Ritira", red);
+	private JButton getBottoneRitira(ControllerApp controller, PropostaRegaloDTO proposta) {
+		JButton bottoneRitira = new OutlinedButton("Ritira", rosso);
 		
-		// TODO metodo rifiuta controller
+		bottoneRitira.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				bottoneRitiraClick(controller, proposta);
+			}
+		});
 		
-		return bottoneRifiuta;
+		return bottoneRitira;
 	}
 	
-	private String getMessaggioProposta() {
+	private void bottoneRitiraClick(ControllerApp controller, PropostaRegaloDTO proposta) {
+		try {
+			controller.ritiraPropostaRegalo(proposta);
+		} catch (SQLException SQLError) {
+    		JOptionPane.showMessageDialog(this, SQLError.getLocalizedMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private String getMessaggioProposta(PropostaRegaloDTO proposta) {
 		String messaggio = "";
 		
 		try {
@@ -83,8 +103,8 @@ public class CardPropostaRegaloInviata extends CardProposta {
      * 
      */
 	
-	private JButton createGrayedOutButton(String text) {
-		JButton bottone = new OutlinedButton(text, Color.gray);
+	private JButton creaBottoneGrigio(String testo) {
+		JButton bottone = new OutlinedButton(testo, Color.gray);
 		
 		bottone.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		

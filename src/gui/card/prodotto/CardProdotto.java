@@ -5,33 +5,27 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
-import controller.AppController;
 import dto.ProdottoDTO;
-import gui.card.CardDisplay;
+import gui.card.Card;
 
-public class CardProdotto extends CardDisplay {
+public class CardProdotto extends Card {
 
 	private static final long serialVersionUID = 1L;
 	
-	private ProdottoDTO prodotto;
-	
 	public CardProdotto(ProdottoDTO prodotto) {
-		this.prodotto = prodotto;
 		
-		createComponents();
+		creaComponenti(prodotto);
+
 	}
 	
-	void createComponents() {
-		JLabel image = getResizedImage(); // TODO Bisogna prenderlo dal DB, dio porco
+	private void creaComponenti(ProdottoDTO prodotto) {
+		JLabel immagine = getImmagineRidimensionata(prodotto);
 		
-		JLabel titolo = createLabel(prodotto.getNome());
-		JTextArea descrizione = createTextArea("Descrizione : " + prodotto.getDescrizione());
+		JLabel titolo = creaLabel(prodotto.getNome());
+		JLabel categoria = creaLabel("Categoria : " + prodotto.getCategoria());
+		JTextArea descrizione = creaTextArea("Descrizione : " + prodotto.getDescrizione());
 		
-		addToLayout(image, titolo, descrizione);
-	}
-	
-	public int getIdProdotto() {
-		return prodotto.getId();
+		aggiungiAlLayout(immagine, titolo, categoria, descrizione);
 	}
 	
     /*
@@ -40,40 +34,37 @@ public class CardProdotto extends CardDisplay {
      * 
      */
 	
-    protected void addToLayout(JComponent image, JComponent ...components) {
+    private void aggiungiAlLayout(JComponent immagine, JComponent ...componenti) {
     	GroupLayout layout = new GroupLayout(this);
-    	setLayout(layout);
 
     	layout.setAutoCreateGaps(true);
     	layout.setAutoCreateContainerGaps(true);
 
-    	GroupLayout.ParallelGroup leftColumn = layout.createParallelGroup();
-    	GroupLayout.ParallelGroup centerColumn = layout.createParallelGroup();
+    	GroupLayout.ParallelGroup colonnaSinistra = layout.createParallelGroup().addComponent(immagine);
+    	GroupLayout.ParallelGroup colonnaCentrale = layout.createParallelGroup();
 
-    	GroupLayout.SequentialGroup centerColumnVertical = layout.createSequentialGroup();
-    	
-	    leftColumn.addComponent(image);
-    	
-    	for (JComponent component : components) {
-    	    centerColumn.addComponent(component);
-    	    centerColumnVertical.addComponent(component);
+    	GroupLayout.SequentialGroup colonnaCentraleVerticale = layout.createSequentialGroup();
+
+    	for (JComponent componente : componenti) {
+    	    colonnaCentrale.addComponent(componente);
+    	    colonnaCentraleVerticale.addComponent(componente);
     	}
 
 
     	layout.setHorizontalGroup(
     	    layout.createSequentialGroup()
-    	        .addGroup(leftColumn)
+    	        .addGroup(colonnaSinistra)
     	        .addGap(20)
-    	        .addGroup(centerColumn)
+    	        .addGroup(colonnaCentrale)
     	);
 
     	layout.setVerticalGroup(
     	    layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-    	        .addGroup(layout.createSequentialGroup().addComponent(image))
-    	        .addGroup(centerColumnVertical)
+    	        .addGroup(layout.createSequentialGroup().addComponent(immagine))
+    	        .addGroup(colonnaCentraleVerticale)
     	);
 
-        this.setLayout(layout);
+        setLayout(layout);
     }
 
 }

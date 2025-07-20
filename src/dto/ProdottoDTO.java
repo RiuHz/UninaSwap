@@ -6,16 +6,16 @@ public class ProdottoDTO {
     private String nome;
     private String descrizione;
     private byte[] immagine;
-    public CategoriaDTO categoria;
-    private String username;
+    private CategoriaDTO categoria;
+    private UtenteDTO utente;
 
-    public ProdottoDTO(int id, String nome, String descrizione, byte[] immagine, CategoriaDTO categoria, String username) {
+    public ProdottoDTO(int id, String nome, String descrizione, byte[] immagine, CategoriaDTO categoria, UtenteDTO utente) {
         this.id = id;
     	this.nome = nome;
         this.descrizione = descrizione;
         this.immagine = immagine;
         this.categoria = categoria;
-        this.username = username;
+        this.utente = utente;
     }
     
     public int getId() {
@@ -34,16 +34,16 @@ public class ProdottoDTO {
         return immagine;
     }
     
-    public String getUser() {
-    	return username;
+    public CategoriaDTO getCategoria() {
+    	return categoria;
     }
     
-    public String getNomeCategoria() {
-    	return categoria.getNome();
+    public UtenteDTO getUtente() {
+    	return utente;
     }
     
-    public int getIdCategoria() {
-    	return categoria.getId();
+    @Override
+    public String toString() {
+    	return nome;
     }
-    
 }

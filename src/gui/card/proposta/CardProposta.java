@@ -1,24 +1,21 @@
 package gui.card.proposta;
 
 import java.awt.Color;
-import java.awt.Dimension;
 
 import javax.swing.GroupLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import dto.proposte.PropostaDTO;
-import gui.card.CardDisplay;
+import gui.card.Card;
 
-public abstract class CardProposta extends CardDisplay {
+public abstract class CardProposta extends Card {
 	
 	private static final long serialVersionUID = 1L;
 	
-	protected final Color green = new Color(0x31E981);
-	protected final Color orange = new Color(0xFCB520);
-	protected final Color red = new Color(0xDF2935);
-	
-	public abstract int getIdProdotto();
+	protected final Color verde = new Color(0x31E981);
+	protected final Color arancione = new Color(0xFCB520);
+	protected final Color rosso = new Color(0xDF2935);
 		
     /*
      * 
@@ -26,53 +23,10 @@ public abstract class CardProposta extends CardDisplay {
      * 
      */
 	
-    protected void addToLayout(JComponent image, JComponent buttonInteraction, JComponent buttonReject, JComponent ...components) {
-    	GroupLayout layout = new GroupLayout(this);
-    	setLayout(layout);
-
-    	layout.setAutoCreateGaps(true);
-    	layout.setAutoCreateContainerGaps(true);
-
-    	GroupLayout.ParallelGroup leftColumn = layout.createParallelGroup();
-    	GroupLayout.ParallelGroup centerColumn = layout.createParallelGroup();
-    	GroupLayout.ParallelGroup rightColumn = layout.createParallelGroup(GroupLayout.Alignment.CENTER);
-
-    	GroupLayout.SequentialGroup centerColumnVertical = layout.createSequentialGroup();
-    	
-	    leftColumn.addComponent(image);
-    	
-    	for (JComponent component : components) {
-    	    centerColumn.addComponent(component);
-    	    centerColumnVertical.addComponent(component);
-    	}
-
-	    rightColumn.addComponent(buttonInteraction);
-	    rightColumn.addComponent(buttonReject);
-
-    	layout.setHorizontalGroup(
-    	    layout.createSequentialGroup()
-    	        .addGroup(leftColumn)
-    	        .addGap(20)
-    	        .addGroup(centerColumn)
-    	        .addGap(20)
-    	        .addGroup(rightColumn)
-    	);
-
-    	layout.setVerticalGroup(
-    	    layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-    	        .addGroup(layout.createSequentialGroup().addComponent(image))
-    	        .addGroup(centerColumnVertical)
-    	        .addGroup(layout.createSequentialGroup().addComponent(buttonInteraction).addComponent(buttonReject))
-    	);
-
-        this.setLayout(layout);
-    }
-    
-    protected JLabel createLabel(String text, Color color) {
-    	JLabel label = new JLabel(text);
-    	label.setFont(verdanaFont);
-    	label.setForeground(color);
-    	label.setMaximumSize(new Dimension(150, 100));
+    protected JLabel creaLabel(String testo, Color colore) {
+    	JLabel label = new JLabel(testo);
+    	label.setFont(font);
+    	label.setForeground(colore);
         
         return label;
     }
@@ -81,12 +35,49 @@ public abstract class CardProposta extends CardDisplay {
 		JLabel stato = new JLabel();
 		
 		switch (proposta.getStato()) {
-			case "Accettata" -> stato = createLabel(proposta.getStato(), green);
-			case "Rifiutata" -> stato = createLabel(proposta.getStato(), red);
-			case "In Attesa" -> stato = createLabel(proposta.getStato(), orange);
+			case "Accettata" -> stato = creaLabel(proposta.getStato(), verde);
+			case "Rifiutata" -> stato = creaLabel(proposta.getStato(), rosso);
+			case "In Attesa" -> stato = creaLabel(proposta.getStato(), arancione);
 		}
 		
 		return stato;
 	}
 	
+    protected void aggiungiAlLayout(JComponent immagine, JComponent bottonePrincipale, JComponent bottoneSecondario, JComponent ...componenti) {
+    	GroupLayout layout = new GroupLayout(this);
+
+    	layout.setAutoCreateGaps(true);
+    	layout.setAutoCreateContainerGaps(true);
+
+    	GroupLayout.ParallelGroup colonnaSinistra = layout.createParallelGroup().addComponent(immagine);
+    	GroupLayout.ParallelGroup colonnaCentrale = layout.createParallelGroup();
+    	GroupLayout.ParallelGroup colonnaDestra = layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(bottonePrincipale).addComponent(bottoneSecondario);
+
+    	GroupLayout.SequentialGroup colonnaCentraleVerticale = layout.createSequentialGroup();
+    	GroupLayout.SequentialGroup colonnaDestraVerticale = layout.createSequentialGroup().addComponent(bottonePrincipale).addComponent(bottoneSecondario);
+    	
+    	for (JComponent componente : componenti) {
+    	    colonnaCentrale.addComponent(componente);
+    	    colonnaCentraleVerticale.addComponent(componente);
+    	}
+
+    	layout.setHorizontalGroup(
+    	    layout.createSequentialGroup()
+    	        .addGroup(colonnaSinistra)
+    	        .addGap(20)
+    	        .addGroup(colonnaCentrale)
+    	        .addGap(20)
+    	        .addGroup(colonnaDestra)
+    	);
+
+    	layout.setVerticalGroup(
+    	    layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+    	        .addGroup(layout.createSequentialGroup().addComponent(immagine))
+    	        .addGroup(colonnaCentraleVerticale)
+    	        .addGroup(colonnaDestraVerticale)
+    	);
+
+        setLayout(layout);
+    }
+    	
 }

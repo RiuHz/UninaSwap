@@ -16,8 +16,4 @@ public class AnnuncioVenditaDTO extends AnnuncioDTO {
 	public double getPrezzo() {
 		return prezzo;
 	}
-	
-	public String getTipologiaAnnuncio() {
-		return "Vendita";
-	}
 }

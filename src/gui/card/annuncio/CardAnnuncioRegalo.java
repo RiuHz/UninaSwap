@@ -1,23 +1,37 @@
 package gui.card.annuncio;
 
-import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import controller.AppController;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+import controller.ControllerApp;
 import dto.annunci.AnnuncioRegaloDTO;
+import gui.dialog.richiesta.DialogRichiediRegalo;
 
 public class CardAnnuncioRegalo extends CardAnnuncio {
 
 	private static final long serialVersionUID = 1L;
+	
+	private DialogRichiediRegalo DialogRichiediRegalo;
 
-	public CardAnnuncioRegalo(AppController controller, AnnuncioRegaloDTO annuncio) {
-		super(annuncio);
+	public CardAnnuncioRegalo(JFrame finestra, ControllerApp controller, AnnuncioRegaloDTO annuncio) {
+		super(controller, annuncio);
+		
+		DialogRichiediRegalo = new DialogRichiediRegalo(finestra, controller, annuncio);
 	}
 
 	@Override
-	protected JButton getButtonAnnuncio() {
-		JButton bottone = new OutlinedButton("Richiedi Regalo", black);
+	protected JButton getBottoneAnnuncio(ControllerApp controller) {
+		JButton bottone = new OutlinedButton("Richiedi Regalo", nero);
 		
-		// TODO apre il dialog per il messaggio
+		bottone.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DialogRichiediRegalo.mostraDialog();
+			}
+		});
 		
 		return bottone;
 	}

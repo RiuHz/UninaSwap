@@ -10,8 +10,4 @@ public class AnnuncioRegaloDTO extends AnnuncioDTO {
 		super(id, consegna, data, stato, prodotto);
 	}
 	
-	public String getTipologiaAnnuncio() {
-		return "Regalo";
-	}
-	
 }

@@ -9,7 +9,7 @@ public abstract class AnnuncioDTO {
 	private String consegna;
 	private Date data;
 	private String stato;
-	public ProdottoDTO prodotto;
+	private ProdottoDTO prodotto;
 	
 	protected AnnuncioDTO(int id, String consegna, Date data, String stato, ProdottoDTO prodotto) {
 		this.id = id;
@@ -33,6 +33,10 @@ public abstract class AnnuncioDTO {
 	
 	public String getStato() {
 		return stato;
+	}
+	
+	public ProdottoDTO getProdotto() {
+		return prodotto;
 	}
 
 }

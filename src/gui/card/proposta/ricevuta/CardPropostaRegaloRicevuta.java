@@ -1,10 +1,15 @@
 package gui.card.proposta.ricevuta;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
-import controller.AppController;
+import controller.ControllerApp;
 import dto.proposte.PropostaRegaloDTO;
 import exception.MessageNotFoundException;
 import gui.card.proposta.CardProposta;
@@ -12,50 +17,70 @@ import gui.card.proposta.CardProposta;
 public class CardPropostaRegaloRicevuta extends CardProposta {
 	
 	private static final long serialVersionUID = 1L;
-	
-	private PropostaRegaloDTO proposta;
 
-	public CardPropostaRegaloRicevuta(AppController controller, PropostaRegaloDTO proposta) {
-		this.proposta = proposta;
+	public CardPropostaRegaloRicevuta(ControllerApp controller, PropostaRegaloDTO proposta) {
 		
-		createComponents();
+		creaComponenti(controller, proposta);
+		
 	}
 	
-	@Override
-	public int getIdProdotto() {
-		return proposta.annuncio.prodotto.getId();
+	private void creaComponenti(ControllerApp controller, PropostaRegaloDTO proposta) {
+		JLabel immagine = getImmagineRidimensionata(proposta.getAnnuncio().getProdotto());
+		
+		JLabel titolo = creaLabel(proposta.getAnnuncio().getProdotto().getNome());
+		JLabel categoria = creaLabel("Categoria : " + proposta.getAnnuncio().getProdotto().getCategoria());
+		JLabel utenteProposta = creaLabel("Proposta ricevuta da : " + proposta.getUtente());
+		JTextArea messaggioLasciato = creaTextArea(getMessaggioProposta(proposta));
+		
+		JButton bottoneInterazione = getBottoneAccetta(controller, proposta);
+		JButton bottoneRifiuta = getBottoneRifiuta(controller, proposta);
+		
+		aggiungiAlLayout(immagine, bottoneInterazione, bottoneRifiuta, titolo, categoria, utenteProposta, messaggioLasciato);
 	}
 	
-	private void createComponents() {
-		JLabel image = getResizedImage(); // TODO Bisogna prenderlo dal DB, dio porco
+	private JButton getBottoneAccetta(ControllerApp controller, PropostaRegaloDTO proposta) {
+		JButton bottoneAccetta = new OutlinedButton("Accetta", verde);
 		
-		JLabel titolo = createLabel(proposta.annuncio.prodotto.getNome());
-		JLabel utenteProposta = createLabel("Proposta ricevuta da : " + proposta.getUser());
-		JTextArea messaggioLasciato = createTextArea(getMessaggioProposta());
-		
-		JButton bottoneInterazione = getBottoneInterazione();
-		JButton bottoneRifiuta = getBottoneRifiuta();
-		
-		addToLayout(image, bottoneInterazione, bottoneRifiuta, titolo, utenteProposta, messaggioLasciato);
-	}
-	
-	private JButton getBottoneInterazione() {
-		JButton bottoneAccetta = new OutlinedButton("Accetta", green);
-		
-		// TODO metodo accetta controller
+		bottoneAccetta.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				bottoneAccettaClick(controller, proposta);
+			}
+		});
 		
 		return bottoneAccetta;
 	}
+	
+	public void bottoneAccettaClick(ControllerApp controller, PropostaRegaloDTO proposta) {
+		try {
+			controller.accettaPropostaRegalo(proposta);
+		} catch (SQLException SQLError) {
+    		JOptionPane.showMessageDialog(this, SQLError.getLocalizedMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+    	}
+	}
 
-	private JButton getBottoneRifiuta() {
-		JButton bottoneRifiuta = new OutlinedButton("Rifiuta", red);
+	private JButton getBottoneRifiuta(ControllerApp controller, PropostaRegaloDTO proposta) {
+		JButton bottoneRifiuta = new OutlinedButton("Rifiuta", rosso);
 		
-		// TODO metodo rifiuta controller
+		bottoneRifiuta.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				bottoneRifiutaClick(controller, proposta);
+			}
+		});
 		
 		return bottoneRifiuta;
 	}
 	
-	private String getMessaggioProposta() {
+	public void bottoneRifiutaClick(ControllerApp controller, PropostaRegaloDTO proposta) {
+		try {
+			controller.rifiutaPropostaRegalo(proposta);
+		} catch (SQLException SQLError) {
+    		JOptionPane.showMessageDialog(this, SQLError.getLocalizedMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+    	}
+	}
+	
+	private String getMessaggioProposta(PropostaRegaloDTO proposta) {
 		String messaggio = "";
 		
 		try {

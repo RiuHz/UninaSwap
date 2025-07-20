@@ -1,23 +1,37 @@
 package gui.card.annuncio;
 
-import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import controller.AppController;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+import controller.ControllerApp;
 import dto.annunci.AnnuncioScambioDTO;
+import gui.dialog.richiesta.DialogRichiediScambio;
 
 public class CardAnnuncioScambio extends CardAnnuncio {
 
 	private static final long serialVersionUID = 1L;
+	
+	private DialogRichiediScambio DialogRichiediScambio;
 
-	public CardAnnuncioScambio(AppController controller, AnnuncioScambioDTO annuncio) {
-		super(annuncio);
+	public CardAnnuncioScambio(JFrame framePadre, ControllerApp controller, AnnuncioScambioDTO annuncio) {
+		super(controller, annuncio);
+		
+		DialogRichiediScambio = new DialogRichiediScambio(framePadre, controller, annuncio);
 	}
 
 	@Override
-	protected JButton getButtonAnnuncio() {
-		JButton bottone = new OutlinedButton("Richiedi Scambio", black);
+	protected JButton getBottoneAnnuncio(ControllerApp controller) {
+		JButton bottone = new OutlinedButton("Richiedi Scambio", nero);
 		
-		// TODO apre il dialog per lo scambio
+		bottone.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DialogRichiediScambio.mostraDialog();
+			}
+		});
 		
 		return bottone;
 	}

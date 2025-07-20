@@ -1,10 +1,15 @@
 package gui.card.proposta.ricevuta;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
-import controller.AppController;
+import controller.ControllerApp;
 import dto.ProdottoDTO;
 import dto.proposte.PropostaScambioDTO;
 import gui.card.proposta.CardProposta;
@@ -13,52 +18,72 @@ public class CardPropostaScambioRicevuta extends CardProposta {
 
 	private static final long serialVersionUID = 1L;
 	
-	private PropostaScambioDTO proposta;
-	
-	public CardPropostaScambioRicevuta(AppController controller, PropostaScambioDTO proposta) {
-		this.proposta = proposta;
+	public CardPropostaScambioRicevuta(ControllerApp controller, PropostaScambioDTO proposta) {
 		
-		createComponents();
+		createComponents(controller, proposta);
+		
 	}
 	
-	@Override
-	public int getIdProdotto() {
-		return proposta.annuncio.prodotto.getId();
+	private void createComponents(ControllerApp controller, PropostaScambioDTO proposta) {
+		JLabel immagine = getImmagineRidimensionata(proposta.getAnnuncio().getProdotto());
+		
+		JLabel titolo = creaLabel(proposta.getAnnuncio().getProdotto().getNome());
+		JLabel categoria = creaLabel("Categoria : " + proposta.getAnnuncio().getProdotto().getCategoria());
+		JLabel utenteProposta = creaLabel("Proposta ricevuta da : " + proposta.getUtente());
+		JTextArea oggettiProposti = creaTextArea(getOggettiProposti(proposta)); 
+		
+		JButton bottoneInterazione = getBottoneAccetta(controller, proposta);
+		JButton bottoneRifiuta = getBottoneRifiuta(controller, proposta);
+		
+		aggiungiAlLayout(immagine, bottoneInterazione, bottoneRifiuta, titolo, categoria, utenteProposta, oggettiProposti);
 	}
 	
-	private void createComponents() {
-		JLabel image = getResizedImage(); // TODO Bisogna prenderlo dal DB, dio porco
+	private JButton getBottoneAccetta(ControllerApp controller, PropostaScambioDTO proposta) {
+		JButton bottoneAccetta = new OutlinedButton("Accetta", verde);
 		
-		JLabel titolo = createLabel(proposta.annuncio.prodotto.getNome());
-		JLabel utenteProposta = createLabel("Proposta ricevuta da : " + proposta.getUser());
-		JTextArea oggettiProposti = createTextArea(getOggettiProposti()); 
-		
-		JButton bottoneInterazione = getBottoneInterazione();
-		JButton bottoneRifiuta = getBottoneRifiuta();
-		
-		addToLayout(image, bottoneInterazione, bottoneRifiuta, titolo, utenteProposta, oggettiProposti);
-	}
-	
-	private JButton getBottoneInterazione() {
-		JButton bottoneAccetta = new OutlinedButton("Accetta", green);
-		
-		// TODO metodo accetta controller
+		bottoneAccetta.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				bottoneAccettaClick(controller, proposta);
+			}
+		});
 		
 		return bottoneAccetta;
 	}
+	
+	public void bottoneAccettaClick(ControllerApp controller, PropostaScambioDTO proposta) {
+		try {
+			controller.accettaPropostaScambio(proposta);
+		} catch (SQLException SQLError) {
+    		JOptionPane.showMessageDialog(this, SQLError.getLocalizedMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+    	}
+	}
 
-	private JButton getBottoneRifiuta() {
-		JButton bottoneRifiuta = new OutlinedButton("Rifiuta", red);
+	private JButton getBottoneRifiuta(ControllerApp controller, PropostaScambioDTO proposta) {
+		JButton bottoneRifiuta = new OutlinedButton("Rifiuta", rosso);
 		
-		// TODO metodo rifiuta controller
+		bottoneRifiuta.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				bottoneRifiutaClick(controller, proposta);
+			}
+		});
 		
 		return bottoneRifiuta;
 	}
 	
-	private String getOggettiProposti() {
+	public void bottoneRifiutaClick(ControllerApp controller, PropostaScambioDTO proposta) {
+		try {
+			controller.rifiutaPropostaScambio(proposta);
+		} catch (SQLException SQLError) {
+    		JOptionPane.showMessageDialog(this, SQLError.getLocalizedMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+    	}
+	}
+	
+	private String getOggettiProposti(PropostaScambioDTO proposta) {
 		String oggetti = "Gli oggetti proposti sono : ";
 		
-		for (ProdottoDTO prodotto : proposta.listaProdottiScambiati)
+		for (ProdottoDTO prodotto : proposta.getListaProdotti())
 			oggetti += prodotto.getNome() + ", ";
 		
 		return oggetti.substring(0, oggetti.length() - 2);
