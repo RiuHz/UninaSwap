@@ -35,7 +35,7 @@ class AnnuncioRegaloDAOPostgre extends DatabaseManager {
 					WHERE Prodotto.Username <> ? AND Stato = 'Attivo' AND ID_Ann_Regalo NOT IN (
 						SELECT Proposta_Regalo.ID_Ann_Regalo
 						FROM Proposta_Regalo
-						WHERE Username = ? AND Stato = 'In Attesa'
+						WHERE Username = ?
 					)
 				""";
 		

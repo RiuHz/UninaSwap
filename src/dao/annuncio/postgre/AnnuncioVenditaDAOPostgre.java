@@ -35,7 +35,7 @@ class AnnuncioVenditaDAOPostgre extends DatabaseManager {
 					WHERE Prodotto.Username <> ? AND Stato = 'Attivo' AND ID_Ann_Vendita NOT IN (
 						SELECT Proposta_Vendita.ID_Ann_Vendita
 						FROM Proposta_Vendita
-						WHERE Username = ? AND Stato = 'In Attesa'
+						WHERE Username = ?
 					)
 				""";
 		
