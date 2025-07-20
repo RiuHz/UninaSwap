@@ -21,6 +21,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 import controller.ControllerApp;
 import dto.ProdottoDTO;
@@ -53,6 +54,7 @@ public class DialogAggiungiAnnuncio extends FinestraDialog {
 	@Override
 	public void aggiornaDialog() {
     	listaProdotti = new JList<ProdottoDTO>(getProdottiElegibiliPerAnnuncio().toArray(new ProdottoDTO[0]));
+    	listaProdotti.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	pannelloProdotti.setViewportView(listaProdotti);
     	textAreaConsegna.setText("");
     	textFieldPrezzo.setText("");
