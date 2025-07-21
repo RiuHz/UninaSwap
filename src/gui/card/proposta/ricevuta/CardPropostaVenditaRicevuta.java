@@ -49,7 +49,7 @@ public class CardPropostaVenditaRicevuta extends CardProposta {
 		return bottoneAccetta;
 	}
 	
-	public void bottoneAccettaClick(ControllerApp controller, PropostaVenditaDTO proposta) {
+	private void bottoneAccettaClick(ControllerApp controller, PropostaVenditaDTO proposta) {
 		try {
 			controller.accettaPropostaVendita(proposta);
 		} catch (SQLException SQLError) {
@@ -70,7 +70,7 @@ public class CardPropostaVenditaRicevuta extends CardProposta {
 		return bottoneRifiuta;
 	}
 	
-	public void bottoneRifiutaClick(ControllerApp controller, PropostaVenditaDTO proposta) {
+	private void bottoneRifiutaClick(ControllerApp controller, PropostaVenditaDTO proposta) {
 		try {
 			controller.rifiutaPropostaVendita(proposta);
 		} catch (SQLException SQLError) {

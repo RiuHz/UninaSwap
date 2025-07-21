@@ -11,13 +11,14 @@ import javax.swing.JTextArea;
 import controller.ControllerApp;
 import dto.annunci.AnnuncioDTO;
 import dto.annunci.AnnuncioVenditaDTO;
+import gui.dialog.FinestraDialog;
 import gui.dialog.richiesta.DialogRichiediVendita;
 
 public class CardAnnuncioVendita extends CardAnnuncio {
 
 	private static final long serialVersionUID = 1L;
 	
-	private DialogRichiediVendita DialogRichiediVendita;
+	private FinestraDialog DialogRichiediVendita;
 
 	public CardAnnuncioVendita(JFrame finestra, ControllerApp controller, AnnuncioVenditaDTO annuncio) {
 		super(controller, annuncio);

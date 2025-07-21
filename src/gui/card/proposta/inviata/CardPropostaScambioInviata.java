@@ -16,13 +16,14 @@ import controller.ControllerApp;
 import dto.ProdottoDTO;
 import dto.proposte.PropostaScambioDTO;
 import gui.card.proposta.CardProposta;
+import gui.dialog.FinestraDialog;
 import gui.dialog.proposta.DialogModificaPropostaScambio;
 
 public class CardPropostaScambioInviata extends CardProposta {
 
 	private static final long serialVersionUID = 1L;
 	
-	private DialogModificaPropostaScambio DialogModificaPropostaScambio;
+	private FinestraDialog DialogModificaPropostaScambio;
 	
 	public CardPropostaScambioInviata(JFrame finestra, ControllerApp controller, PropostaScambioDTO proposta) {
 		DialogModificaPropostaScambio = new DialogModificaPropostaScambio(finestra, controller, proposta);

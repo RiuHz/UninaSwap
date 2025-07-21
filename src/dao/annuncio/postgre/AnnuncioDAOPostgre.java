@@ -15,6 +15,7 @@ public class AnnuncioDAOPostgre implements AnnuncioDAOInterface {
 	AnnuncioVenditaDAOPostgre AnnuncioVenditaDAO = new AnnuncioVenditaDAOPostgre();
 	AnnuncioScambioDAOPostgre AnnuncioScambioDAO = new AnnuncioScambioDAOPostgre();
 	
+	@Override
 	public ArrayList<AnnuncioDTO> getAnnunciRecenti(UtenteDTO utente) throws SQLException {
 		ArrayList<AnnuncioDTO> listaAnnunci = new ArrayList<AnnuncioDTO>();
 		

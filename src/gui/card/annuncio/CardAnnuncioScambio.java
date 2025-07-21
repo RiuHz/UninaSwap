@@ -8,13 +8,14 @@ import javax.swing.JFrame;
 
 import controller.ControllerApp;
 import dto.annunci.AnnuncioScambioDTO;
+import gui.dialog.FinestraDialog;
 import gui.dialog.richiesta.DialogRichiediScambio;
 
 public class CardAnnuncioScambio extends CardAnnuncio {
 
 	private static final long serialVersionUID = 1L;
 	
-	private DialogRichiediScambio DialogRichiediScambio;
+	private FinestraDialog DialogRichiediScambio;
 
 	public CardAnnuncioScambio(JFrame framePadre, ControllerApp controller, AnnuncioScambioDTO annuncio) {
 		super(controller, annuncio);

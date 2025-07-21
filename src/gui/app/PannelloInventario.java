@@ -23,6 +23,7 @@ import javax.swing.SwingConstants;
 import controller.ControllerApp;
 import dto.ProdottoDTO;
 import gui.card.prodotto.CardProdotto;
+import gui.dialog.FinestraDialog;
 import gui.dialog.annuncio.DialogAggiungiAnnuncio;
 import gui.dialog.prodotto.DialogAggiungiProdotto;
 
@@ -33,8 +34,8 @@ class PannelloInventario extends JPanel {
 	private ControllerApp controller;
 	
 	private JPanel pannelloProdotti = new JPanel();
-	private DialogAggiungiProdotto dialogAggiungiProdotto;
-	private DialogAggiungiAnnuncio dialogAggiungiAnnuncio;
+	private FinestraDialog dialogAggiungiProdotto;
+	private FinestraDialog dialogAggiungiAnnuncio;
 	
 	private final Font font = new Font("Verdana", Font.PLAIN, 20);
 	private final Color nero = new Color(0x262626);

@@ -16,13 +16,14 @@ import controller.ControllerApp;
 import dto.proposte.PropostaRegaloDTO;
 import exception.MessageNotFoundException;
 import gui.card.proposta.CardProposta;
+import gui.dialog.FinestraDialog;
 import gui.dialog.proposta.DialogModificaPropostaRegalo;
 
 public class CardPropostaRegaloInviata extends CardProposta {
 
 	private static final long serialVersionUID = 1L;
 	
-	private DialogModificaPropostaRegalo DialogModificaPropostaRegalo;
+	private FinestraDialog DialogModificaPropostaRegalo;
 	
 	public CardPropostaRegaloInviata(JFrame finestra, ControllerApp controller, PropostaRegaloDTO proposta) {
 		DialogModificaPropostaRegalo = new DialogModificaPropostaRegalo(finestra, controller, proposta);

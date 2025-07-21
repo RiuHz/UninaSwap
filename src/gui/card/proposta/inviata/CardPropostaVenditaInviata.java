@@ -14,13 +14,14 @@ import javax.swing.JOptionPane;
 import controller.ControllerApp;
 import dto.proposte.PropostaVenditaDTO;
 import gui.card.proposta.CardProposta;
+import gui.dialog.FinestraDialog;
 import gui.dialog.proposta.DialogModificaPropostaVendita;
 
 public class CardPropostaVenditaInviata extends CardProposta {
 
 	private static final long serialVersionUID = 1L;
 	
-	private DialogModificaPropostaVendita DialogModificaPropostaVendita;
+	private FinestraDialog DialogModificaPropostaVendita;
 	
 	public CardPropostaVenditaInviata(JFrame finestra, ControllerApp controller, PropostaVenditaDTO proposta) {
 		DialogModificaPropostaVendita = new DialogModificaPropostaVendita(finestra, controller, proposta);

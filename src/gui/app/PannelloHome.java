@@ -19,6 +19,7 @@ import gui.card.annuncio.CardAnnuncio;
 import gui.card.annuncio.CardAnnuncioRegalo;
 import gui.card.annuncio.CardAnnuncioScambio;
 import gui.card.annuncio.CardAnnuncioVendita;
+import gui.dialog.FinestraDialog;
 import gui.dialog.filtro.DialogFiltri;
 
 class PannelloHome extends JPanel {
@@ -29,7 +30,7 @@ class PannelloHome extends JPanel {
 	
 	private JFrame finestra;
 	private JPanel pannelloAnnunci = new JPanel();
-	private DialogFiltri dialogFiltri;
+	private FinestraDialog dialogFiltri;
 
 	private final Font font = new Font("Verdana", Font.PLAIN, 20);
 	private final Color nero = new Color(0x262626);
