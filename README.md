@@ -1,6 +1,23 @@
-# 🇬🇧 UniNaSwap
+
+# UniNaSwap
+This project was created as part of a university assignment to showcase the understanding of the core concepts of Object-Oriented Programming and DAO Pattern.
+## Disclaimer
+
+This repository contains only the client-side application developed for the UniNaSwap project. It depends on additional components that are not included in this repository and therefore cannot be executed as a standalone system.
+
+
+## About
 
 UniNaSwap is a system for exchanging, selling, and gifting items between university students. This project was created as part of a university assignment.
+
+This project was developed to demonstrate:
+
+- Object-Oriented Design principles
+- Layered Software Architecture
+- DAO Pattern implementation
+- GUI development in Java
+- Exception handling and DTO usage
+## Features
 
 The system allows users to:
 
@@ -8,19 +25,39 @@ The system allows users to:
 - Make offers for announcements listed on the platform.
 - Accept or reject received proposals.
 - View a list of proposals made, along with their outcomes, accompanied by a graphical report.
+## Tech Stack
 
-*This repository contains the work done for the exams of Object-Oriented Programming and Databases.*
+**Client (Java)**
+- Object-oriented design
+- DAO Pattern
+- Layered software architecture
+- Graphical user interface (GUI)
 
----
+## Architecture
 
-# 🇮🇹 UniNaSwap
+The project follows a layered architecture:
 
-UninaSwap è un sistema di scambio, vendita e regalo di oggetti tra studenti universitari. Questo progetto è stato realizzato come parte di un'attività universitaria.
+- Presentation Layer (GUI)
+- Controller Layer
+- Data Access Layer (DAO)
+- Data Transfer Objects (DTO)
 
-Il sistema permette agli utenti di:
-- Aggiungere un annuncio sulla piattaforma.
-- Proporre offerte per gli annunci presenti sulla piattaforma.
-- Accettare o rifiutare le proposte ricevute.
-- Visualizzare la lista delle proposte effettuate, con il loro esito, accompagnata da un report grafico.
+The DAO pattern is used to isolate persistence logic from business logic, improving maintainability and testability.
+## Repository Structure
 
-*Questo repository contiene il lavoro svolto per gli esami di Programmazione Orientata agli Oggetti e Basi di Dati.*
+- `src/controller` → Controllers to handle incoming requests
+- `src/dao` → Data Access Object to access the underlying storage
+- `src/dto` → Data Transfer Object used to represent the storage entities
+- `src/exception` Custom exception to handle custom software behaviour
+- `src/gui` Graphical User Interface related code and classes
+- `src/img` Images used by the software (Logo, icons, etc.)
+
+## License
+
+This project is licensed under the [MIT](https://choosealicense.com/licenses/mit/) License.
+
+
+## Authors
+
+- GitHub: [@RiuHz](https://www.github.com/RiuHz)
+- GitHub: [@faustoandreabellucci](https://github.com/faustoandreabellucci)
